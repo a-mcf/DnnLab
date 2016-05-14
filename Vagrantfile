@@ -12,7 +12,7 @@ Vagrant.configure(2) do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "mwrock/Windows2012R2"
+  config.vm.box = "a-mcf/Win2012R2-WMF5"
   
   config.vm.provision "shell", path: "./scripts/bootstrap.ps1"
   

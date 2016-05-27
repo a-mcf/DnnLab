@@ -1,0 +1,1 @@
+{"virtualbox":{"/vagrant":{"guestpath":"/vagrant","hostpath":"C:/Users/amcfa/source/bitbucket/dnn-lab","disabled":false,"__vagrantfile":true},"/tmp/vagrant-dsc-5/dsc":{"owner":"root","guestpath":"/tmp/vagrant-dsc-5/dsc","hostpath":"C:/Users/amcfa/source/bitbucket/dnn-lab/dsc","disabled":false,"__vagrantfile":true}}}

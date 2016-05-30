@@ -25,7 +25,7 @@ Vagrant.configure(2) do |config|
     # environment to enable local modules to be addressed.
     #
     # @return [Array] Set of relative module paths.
-    #dsc.module_path = ["urlsvc/ShortUrlWebApp/modules"]
+    #dsc.module_path = ["dsc/modules"]
 
     # The path relative to `dsc.manifests_path` pointing to the Configuration file
     dsc.configuration_file  = "DNNLabConfig.ps1"

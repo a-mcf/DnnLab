@@ -12,12 +12,24 @@ Configuration DNNLabConfig
         DestinationPath = "c:\file.txt"
     }
     
+    file DnnInstallFiles
+    {
+        Ensure = "Present"
+        Type = 'Directory'
+        Recurse = $true
+        SourcePath = 'c:\vagrant\dnn\install\'
+        DestinationPath = "c:\inetpub\wwwroot\lab-a"
+    }
+    
+    <#
     Archive UnzipDNN
     {
         Path = 'c:\vagrant\dnn\dnnInstall.zip'
         Destination = 'c:\inetpub\wwwroot\lab-a'
         Ensure = 'Present'
     }
+    #>
+    
     
     WindowsFeature IIS
     {

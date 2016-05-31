@@ -66,6 +66,7 @@ Configuration DNNLabConfig
         Name = 'Web-Static-Content'
         Ensure = 'Present'
     }   
+    
     xWebSite Default
     {
         Name = 'Default Web Site'
@@ -116,5 +117,24 @@ Configuration DNNLabConfig
         Database = 'lab-a'
         Role = 'db_owner'
         Ensure = 'Present'
+    }
+    
+    Script ConnectionString
+    {
+        GetScript = {
+            $webConfigXml = (Get-Content 'c:\inetpub\wwwroot\lab-a\web.config') -as [XML]
+            @{
+                SiteSQLServer = $webConfigXml.configuration.connectionStrings.add.connectionString 
+            }              
+        }
+        SetScript = {
+            $webConfigXml = (Get-Content 'c:\inetpub\wwwroot\lab-a\web.config') -as [XML]
+            $webConfigXml.configuration.connectionStrings.add.connectionString = "Server=(local);Database=lab-a;Integrated Security=True"
+            $webConfigXml.Save('c:\inetpub\wwwroot\lab-a\web.config')
+        }
+        TestScript = {
+            $webConfigXml = (Get-Content 'c:\inetpub\wwwroot\lab-a\web.config') -as [XML]
+            $webConfigXml.configuration.connectionStrings.add.connectionString -eq "Server=(local);Database=lab-a;Integrated Security=True"
+        }
     }
 }

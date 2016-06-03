@@ -30,7 +30,6 @@ Configuration DNNLabConfig
     }
     #>
     
-    
     WindowsFeature IIS
     {
         Name = "Web-WebServer"

@@ -5,9 +5,9 @@ choco install sqlserver2008r2express-managementstudio -y
 
 # DSC modules
 Write-Host "Setting PSGallery as trusted"
-Set-PackageSource -Name PSGallery -Trusted -ForceBootstrap
+Set-PackageSource -Name PSGallery -Trusted -ForceBootstrap | Out-Null
 
-Write-Host "Installing module"
+Write-Host "Installing modules from PSGallery"
 Install-Module -Name xWebadministration
 Install-Module -Name cNtfsAccessControl
 Install-Module -Name xSQLServer
@@ -15,9 +15,10 @@ Install-Module -Name xSQLServer
 # download DNN install file if it does not exist
 if (!(Test-Path -Path "c:\vagrant\dnn\dnnInstall.zip"))
 {
-    if (!(Test-Path 'c:\vagrant\dnn\')) { 
+    if (!(Test-Path 'c:\vagrant\dnn\'))
+    { 
         mkdir 'c:\vagrant\dnn\' | Out-Null 
-        mkdir 'c:\vagrant\dnn\install'    
+        mkdir 'c:\vagrant\dnn\install' | Out-Null
     }
     
     $dlUrl = 'http://download-codeplex.sec.s-msft.com/Download/Release?ProjectName=dotnetnuke&DownloadId=1493875&FileTime=130885394216030000&Build=21031'

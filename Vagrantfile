@@ -12,7 +12,7 @@ Vagrant.configure(2) do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "a-mcf/Win2012R2-WMF5"
+  config.vm.box = "a-mcf/Win2012R2-WMF5-Min"
   
   config.vm.provision "shell", path: "./scripts/bootstrap.ps1"
   
@@ -63,6 +63,8 @@ Vagrant.configure(2) do |config|
     # Temporary working directory on the guest machine.
     # dsc.temp_dir = "c:/tmp/vagrant-dsc"
   end
+  
+   config.vm.provision "shell", path: "./scripts/installdnn.ps1"
   
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs

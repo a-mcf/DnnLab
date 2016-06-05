@@ -5,31 +5,25 @@ Configuration DNNLabConfig
     Import-DscResource -ModuleName 'cNtfsAccessControl'
     Import-DscResource -ModuleName 'xSQLServer'
     
-    file DemoFile
-    {
-        ensure = "Present"
-        Contents = $ConfigurationData.NonNodeData.FileText
-        DestinationPath = "c:\file.txt"
-    }
     
-    file DnnInstallFiles
+    # using this instead of the file resource, because we only
+    # want a one-time copy. The file resource was repopulating
+    # the /install folder after modules were installed  and removed.
+    Script InstallFileCopy
     {
-        Ensure = "Present"
-        Type = 'Directory'
-        Recurse = $true
-        SourcePath = 'c:\vagrant\dnn\install\'
-        DestinationPath = "c:\inetpub\wwwroot\lab-a"
+        GetScript = {
+            @{
+                PathExists = Test-Path -Path (Join-Path -Path $using:ConfigurationData.NonNodeData.DotNetNukePath -ChildPath "\Install\")
+            }
+        }
+        SetScript = {
+            Copy-Item -Recurse -Path 'c:\vagrant\dnn\install\' -Destination $using:ConfigurationData.NonNodeData.DotNetNukePath
+        }
+        TestScript = {
+            Test-Path -Path (Join-Path -Path $using:ConfigurationData.NonNodeData.DotNetNukePath -ChildPath "\Install\")
+        }
     }
-    
-    <#
-    Archive UnzipDNN
-    {
-        Path = 'c:\vagrant\dnn\dnnInstall.zip'
-        Destination = 'c:\inetpub\wwwroot\lab-a'
-        Ensure = 'Present'
-    }
-    #>
-    
+
     WindowsFeature IIS
     {
         Name = "Web-WebServer"
@@ -66,25 +60,25 @@ Configuration DNNLabConfig
         Ensure = 'Present'
     }   
     
-    xWebSite Default
+    xWebSite DefaultWebSite
     {
         Name = 'Default Web Site'
         Ensure = 'Present'
         State = 'Stopped'
     }
     
-    XWebsite DemoSite
+    xWebsite DemoSite
     {
         Name = 'Demo'
         PhysicalPath = 'c:\inetpub\wwwroot\lab-a'
         State = 'Started'
-        DependsOn = '[xWebsite]Default'
+        DependsOn = '[xWebsite]DefaultWebSite'
     }
-    
+            
     cNtfsPermissionEntry SiteNTFSPermissions
     {
         Ensure = 'Present'
-        Path = 'c:\inetpub\wwwroot\lab-a'
+        Path = $ConfigurationData.NonNodeData.DotNetNukePath
         Principal = 'IIS APPPOOL\DefaultAppPool'
         AccessControlInformation = @(
             cNtfsAccessControlInformation
@@ -96,6 +90,26 @@ Configuration DNNLabConfig
             }
         )
         #DependsOn = '[File]TestDirectory'
+    }
+
+    $webConfigPath = Join-Path -Path $ConfigurationData.NonNodeData.DotNetNukePath -ChildPath "web.config"   
+    Script ConnectionString
+    {
+        GetScript = {
+            $webConfigXml = (Get-Content $using:webConfigPath) -as [XML]
+            @{
+                SiteSQLServer = $webConfigXml.configuration.connectionStrings.add.connectionString 
+            }              
+        }
+        SetScript = {
+            $webConfigXml = (Get-Content $using:webConfigPath) -as [XML]
+            $webConfigXml.configuration.connectionStrings.add.connectionString = "Server=(local);Database=lab-a;Integrated Security=True"
+            $webConfigXml.Save($using:webConfigPath)
+        }
+        TestScript = {
+            $webConfigXml = (Get-Content $using:webConfigPath) -as [XML]
+            $webConfigXml.configuration.connectionStrings.add.connectionString -eq "Server=(local);Database=lab-a;Integrated Security=True"
+        }
     }
     
     xSQLServerDatabase DnnInstanceDB
@@ -116,24 +130,5 @@ Configuration DNNLabConfig
         Database = 'lab-a'
         Role = 'db_owner'
         Ensure = 'Present'
-    }
-    
-    Script ConnectionString
-    {
-        GetScript = {
-            $webConfigXml = (Get-Content 'c:\inetpub\wwwroot\lab-a\web.config') -as [XML]
-            @{
-                SiteSQLServer = $webConfigXml.configuration.connectionStrings.add.connectionString 
-            }              
-        }
-        SetScript = {
-            $webConfigXml = (Get-Content 'c:\inetpub\wwwroot\lab-a\web.config') -as [XML]
-            $webConfigXml.configuration.connectionStrings.add.connectionString = "Server=(local);Database=lab-a;Integrated Security=True"
-            $webConfigXml.Save('c:\inetpub\wwwroot\lab-a\web.config')
-        }
-        TestScript = {
-            $webConfigXml = (Get-Content 'c:\inetpub\wwwroot\lab-a\web.config') -as [XML]
-            $webConfigXml.configuration.connectionStrings.add.connectionString -eq "Server=(local);Database=lab-a;Integrated Security=True"
-        }
     }
 }

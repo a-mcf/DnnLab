@@ -14,7 +14,7 @@ Vagrant.configure(2) do |config|
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = "a-mcf/Win2012R2-WMF5-Min"
   
-  config.vm.provision "shell", path: "./scripts/bootstrap.ps1"
+  config.vm.provision "shell", path: "./scripts/Bootstrap.ps1"
   
   # Run DSC
   config.vm.provision "dsc", run: "always" do |dsc|
@@ -64,7 +64,7 @@ Vagrant.configure(2) do |config|
     # dsc.temp_dir = "c:/tmp/vagrant-dsc"
   end
   
-   config.vm.provision "shell", path: "./scripts/installdnn.ps1"
+   config.vm.provision "shell", path: "./scripts/InstallDnn.ps1"
   
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs

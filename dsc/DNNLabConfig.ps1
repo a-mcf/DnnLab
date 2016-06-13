@@ -3,12 +3,15 @@ Configuration DNNLabConfig
     Import-DscResource -ModuleName 'PSDesiredStateConfiguration'
     Import-DscResource -ModuleName 'xWebAdministration'
     Import-DscResource -ModuleName 'cNtfsAccessControl'
-    Import-DscResource -ModuleName 'xSQLServer'
-    
+    Import-DscResource -ModuleName 'xNetworking'
+
+    # composite resources
+    Import-DscResource -ModuleName 'DnnWebserverConfig'
+    Import-DscResource -ModuleName 'DnnDatabaseConfig'
     
     # using this instead of the file resource, because we only
     # want a one-time copy. The file resource was repopulating
-    # the /install folder after modules were installed  and removed.
+    # the /install folder after modules were installed and removed.
     Script InstallFileCopy
     {
         GetScript = {
@@ -24,55 +27,14 @@ Configuration DNNLabConfig
         }
     }
 
-    WindowsFeature IIS
+    DnnWebserverRoles DnnLabWebRoles
     {
-        Name = "Web-WebServer"
         Ensure = "Present"
     }
-    
-    WindowsFeature WebMgmntSvc
-    {
-        Name = 'Web-Mgmt-Service'
-        Ensure = 'Present' 
-    }
 
-    WindowsFeature WebmgmntConsole
+    DnnWebsite DnnLabWebsite
     {
-        Name = 'Web-Mgmt-Console'
-        Ensure = 'Present'
-    }
-
-    WindowsFeature WebAspNet45
-    {
-        Name = 'Web-Asp-Net45'
-        Ensure = 'Present'
-    }
-
-    WindowsFeature WebHttpLogging
-    {
-        Name = 'Web-Http-Logging'
-        Ensure = 'Present'
-    }
-
-    WindowsFeature WebStaticContent
-    {
-        Name = 'Web-Static-Content'
-        Ensure = 'Present'
-    }   
-    
-    xWebSite DefaultWebSite
-    {
-        Name = 'Default Web Site'
-        Ensure = 'Present'
-        State = 'Stopped'
-    }
-    
-    xWebsite DemoSite
-    {
-        Name = 'Demo'
-        PhysicalPath = 'c:\inetpub\wwwroot\lab-a'
-        State = 'Started'
-        DependsOn = '[xWebsite]DefaultWebSite'
+        Ensure = "Present"
     }
             
     cNtfsPermissionEntry SiteNTFSPermissions
@@ -89,7 +51,7 @@ Configuration DNNLabConfig
                 NoPropagateInherit = $false
             }
         )
-        #DependsOn = '[File]TestDirectory'
+        DependsOn = '[Script]InstallFileCopy'
     }
 
     $webConfigPath = Join-Path -Path $ConfigurationData.NonNodeData.DotNetNukePath -ChildPath "web.config"   
@@ -111,24 +73,19 @@ Configuration DNNLabConfig
             $webConfigXml.configuration.connectionStrings.add.connectionString -eq "Server=(local);Database=lab-a;Integrated Security=True"
         }
     }
-    
-    xSQLServerDatabase DnnInstanceDB
+
+    DnnDatabase DnnSqlDatabase
     {
-        Database = 'lab-a'
-        Ensure = 'Present'
+            DatabaseName = 'lab-a'
+            WebUser = 'IIS APPPOOL\DefaultAppPool'
+            WebUserLoginType = 'WindowsGroup'
+            Ensure = 'Present'
     }
-    
-    xSQLServerLogin DnnInstanceSQL
+
+    xHostsFile SQLHostsEntry
     {
-        Name = 'IIS APPPOOL\DefaultAppPool'
-        LoginType = 'WindowsGroup'
-    }
-    
-    xSQLServerDatabaseRole DnnDbo
-    {
-        Name = 'IIS APPPOOL\DefaultAppPool'
-        Database = 'lab-a'
-        Role = 'db_owner'
+        HostName = 'DnnSQL'
+        IPAddress = '127.0.0.1'
         Ensure = 'Present'
     }
 }

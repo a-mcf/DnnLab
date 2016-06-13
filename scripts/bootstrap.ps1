@@ -11,6 +11,7 @@ Write-Host "Installing modules from PSGallery"
 Install-Module -Name xWebadministration
 Install-Module -Name cNtfsAccessControl
 Install-Module -Name xSQLServer
+Install-Module -Name xNetworking
 
 # download DNN install file if it does not exist
 if (!(Test-Path -Path "c:\vagrant\dnn\dnnInstall.zip"))

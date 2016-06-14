@@ -1,7 +1,6 @@
 Configuration DNNLabConfig
 {
     Import-DscResource -ModuleName 'PSDesiredStateConfiguration'
-    Import-DscResource -ModuleName 'xWebAdministration'
     Import-DscResource -ModuleName 'cNtfsAccessControl'
     Import-DscResource -ModuleName 'xNetworking'
 
@@ -34,7 +33,8 @@ Configuration DNNLabConfig
 
     DnnWebsite DnnLabWebsite
     {
-        Ensure = "Present"
+        Name = $ConfigurationData.NonNodeData.Name
+        Path = $ConfigurationData.NonNodeData.DotNetNukePath
     }
             
     cNtfsPermissionEntry SiteNTFSPermissions

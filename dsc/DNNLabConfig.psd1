@@ -11,10 +11,9 @@
     DnnSiteData = @{
         Name = "lab-a"
         DotNetNukePath = "c:\inetpub\wwwroot\lab-a"
-        SQLServer = "localhost"
-        Url = @(
-            "localhost"
-            "www.test.local"
-        )
+        Webroot = 'c:\WebRoot'
+        SQLServerIP = "127.0.0.1"
     }
+    # added to make VSCode happy
+    ModuleVersion = '1.0'
 }

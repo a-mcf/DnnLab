@@ -7,23 +7,13 @@ Configuration DNNLabConfig
     # composite resources
     Import-DscResource -ModuleName 'DnnWebserverConfig'
     Import-DscResource -ModuleName 'DnnDatabaseConfig'
+    Import-DscResource -ModuleName 'ScriptResources'
     
-    # using this instead of the file resource, because we only
-    # want a one-time copy. The file resource was repopulating
-    # the /install folder after modules were installed and removed.
-    Script InstallFileCopy
+
+    InstallFileCopy DnnInstallFiles
     {
-        GetScript = {
-            @{
-                PathExists = Test-Path -Path (Join-Path -Path $using:ConfigurationData.DnnSiteData.DotNetNukePath -ChildPath "\Install\")
-            }
-        }
-        SetScript = {
-            Copy-Item -Recurse -Path 'c:\vagrant\dnn\install\' -Destination $using:ConfigurationData.DnnSiteData.DotNetNukePath
-        }
-        TestScript = {
-            Test-Path -Path (Join-Path -Path $using:ConfigurationData.DnnSiteData.DotNetNukePath -ChildPath "\Install\")
-        }
+        Source = 'c:\vagrant\dnn\install\'
+        Destination = $ConfigurationData.DnnSiteData.DotNetNukePath
     }
 
     DnnWebserverRoles DnnLabWebRoles
@@ -51,27 +41,14 @@ Configuration DNNLabConfig
                 NoPropagateInherit = $false
             }
         )
-        DependsOn = '[Script]InstallFileCopy'
+        #DependsOn = '[Script]InstallFileCopy'
     }
 
-    $webConfigPath = Join-Path -Path $ConfigurationData.DnnSiteData.DotNetNukePath -ChildPath "web.config"   
-    Script ConnectionString
+    ConnectionStrings DnnConnectionString
     {
-        GetScript = {
-            $webConfigXml = (Get-Content $using:webConfigPath) -as [XML]
-            @{
-                SiteSQLServer = $webConfigXml.configuration.connectionStrings.add.connectionString 
-            }              
-        }
-        SetScript = {
-            $webConfigXml = (Get-Content $using:webConfigPath) -as [XML]
-            $webConfigXml.configuration.connectionStrings.add.connectionString = "Server=(local);Database=lab-a;Integrated Security=True"
-            $webConfigXml.Save($using:webConfigPath)
-        }
-        TestScript = {
-            $webConfigXml = (Get-Content $using:webConfigPath) -as [XML]
-            $webConfigXml.configuration.connectionStrings.add.connectionString -eq "Server=(local);Database=lab-a;Integrated Security=True"
-        }      
+        WebsitePath = $ConfigurationData.DnnSiteData.DotNetNukePath
+        SQLServer = $ConfigurationData.DnnSiteData.Name + "-SQL"
+        DatabaseName = $ConfigurationData.DnnSiteData.Name
     }
 
     DnnDatabase DnnSqlDatabase
@@ -84,8 +61,8 @@ Configuration DNNLabConfig
 
     xHostsFile SQLHostsEntry
     {
-        HostName = 'DnnSQL'
-        IPAddress = '127.0.0.1'
+        HostName = $ConfigurationData.DnnSiteData.Name + "-SQL"
+        IPAddress = $ConfigurationData.DnnSiteData.SQLServerIP
         Ensure = 'Present'
     }
 }

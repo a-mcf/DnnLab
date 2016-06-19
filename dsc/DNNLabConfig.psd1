@@ -8,9 +8,13 @@
             )
         }
     )
-    NonNodeData = @{
-        #FileText = "This is the file text supplied from configuration data."
-        DotNetNukePath = "c:\inetpub\wwwroot\lab-a"
+    DnnSiteData = @{
         Name = "lab-a"
+        DotNetNukePath = "c:\inetpub\wwwroot\lab-a"
+        SQLServer = "localhost"
+        Url = @(
+            "localhost"
+            "www.test.local"
+        )
     }
 }

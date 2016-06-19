@@ -15,14 +15,14 @@ Configuration DNNLabConfig
     {
         GetScript = {
             @{
-                PathExists = Test-Path -Path (Join-Path -Path $using:ConfigurationData.NonNodeData.DotNetNukePath -ChildPath "\Install\")
+                PathExists = Test-Path -Path (Join-Path -Path $using:ConfigurationData.DnnSiteData.DotNetNukePath -ChildPath "\Install\")
             }
         }
         SetScript = {
-            Copy-Item -Recurse -Path 'c:\vagrant\dnn\install\' -Destination $using:ConfigurationData.NonNodeData.DotNetNukePath
+            Copy-Item -Recurse -Path 'c:\vagrant\dnn\install\' -Destination $using:ConfigurationData.DnnSiteData.DotNetNukePath
         }
         TestScript = {
-            Test-Path -Path (Join-Path -Path $using:ConfigurationData.NonNodeData.DotNetNukePath -ChildPath "\Install\")
+            Test-Path -Path (Join-Path -Path $using:ConfigurationData.DnnSiteData.DotNetNukePath -ChildPath "\Install\")
         }
     }
 
@@ -33,14 +33,14 @@ Configuration DNNLabConfig
 
     DnnWebsite DnnLabWebsite
     {
-        Name = $ConfigurationData.NonNodeData.Name
-        Path = $ConfigurationData.NonNodeData.DotNetNukePath
+        Name = $ConfigurationData.DnnSiteData.Name
+        Path = $ConfigurationData.DnnSiteData.DotNetNukePath
     }
             
     cNtfsPermissionEntry SiteNTFSPermissions
     {
         Ensure = 'Present'
-        Path = $ConfigurationData.NonNodeData.DotNetNukePath
+        Path = $ConfigurationData.DnnSiteData.DotNetNukePath
         Principal = 'IIS APPPOOL\DefaultAppPool'
         AccessControlInformation = @(
             cNtfsAccessControlInformation
@@ -54,7 +54,7 @@ Configuration DNNLabConfig
         DependsOn = '[Script]InstallFileCopy'
     }
 
-    $webConfigPath = Join-Path -Path $ConfigurationData.NonNodeData.DotNetNukePath -ChildPath "web.config"   
+    $webConfigPath = Join-Path -Path $ConfigurationData.DnnSiteData.DotNetNukePath -ChildPath "web.config"   
     Script ConnectionString
     {
         GetScript = {
@@ -71,12 +71,12 @@ Configuration DNNLabConfig
         TestScript = {
             $webConfigXml = (Get-Content $using:webConfigPath) -as [XML]
             $webConfigXml.configuration.connectionStrings.add.connectionString -eq "Server=(local);Database=lab-a;Integrated Security=True"
-        }
+        }      
     }
 
     DnnDatabase DnnSqlDatabase
     {
-            DatabaseName = 'lab-a'
+            DatabaseName = $ConfigurationData.DnnSiteData.Name
             WebUser = 'IIS APPPOOL\DefaultAppPool'
             WebUserLoginType = 'WindowsGroup'
             Ensure = 'Present'

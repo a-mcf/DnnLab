@@ -47,7 +47,8 @@ Configuration DNNLabConfig
     ConnectionStrings DnnConnectionString
     {
         WebsitePath = $ConfigurationData.DnnSiteData.DotNetNukePath
-        SQLServer = $ConfigurationData.DnnSiteData.Name + "-SQL"
+        SQLServer = "(local)"
+        #SQLServer = $ConfigurationData.DnnSiteData.Name + "-SQL"
         DatabaseName = $ConfigurationData.DnnSiteData.Name
     }
 

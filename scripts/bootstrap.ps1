@@ -22,7 +22,11 @@ if (!(Test-Path -Path "c:\vagrant\dnn\dnnInstall.zip"))
         mkdir 'c:\vagrant\dnn\install' | Out-Null
     }
     
+    # DNN 7
     $dlUrl = 'http://download-codeplex.sec.s-msft.com/Download/Release?ProjectName=dotnetnuke&DownloadId=1493875&FileTime=130885394216030000&Build=21031'
+    # DNN 8
+    #$dlUrl = 'http://download-codeplex.sec.s-msft.com/Download/Release?ProjectName=dotnetnuke&DownloadId=1574135&FileTime=131087835783300000&Build=21031'
+    
     Write-Host "Downloading DNN from $dlUrl"
     (New-Object System.Net.WebClient).DownloadFile($dlUrl,"c:\vagrant\dnn\dnnInstall.zip")
     Expand-Archive -Path 'c:\vagrant\dnn\dnnInstall.zip' -DestinationPath 'c:\vagrant\dnn\install\'

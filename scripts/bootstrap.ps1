@@ -12,6 +12,8 @@ Install-Module -Name xWebadministration
 Install-Module -Name cNtfsAccessControl
 Install-Module -Name xSQLServer
 Install-Module -Name xNetworking
+Install-Module -Name cChoco
+
 
 # download DNN install file if it does not exist
 if (!(Test-Path -Path "c:\vagrant\dnn\dnnInstall.zip"))

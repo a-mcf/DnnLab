@@ -13,3 +13,7 @@ A collection of scripts and PowerShell DSC code to build a DotNetNuke developmen
 - Figure out how to make SQL express install so that the hosts file entry actually works.
 - Consider an "Instal Ran" resource that checks for the existance of the DNN install log.
 - COnsider an installer resource that runs the DNN install with a depenency on the instlall ran resource.
+
+## Notes:
+- Using the cChoco repo failed. It needs an installargs parameter.
+- Use a script resource?

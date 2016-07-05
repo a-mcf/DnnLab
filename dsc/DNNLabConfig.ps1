@@ -3,12 +3,26 @@ Configuration DNNLabConfig
     Import-DscResource -ModuleName 'PSDesiredStateConfiguration'
     Import-DscResource -ModuleName 'cNtfsAccessControl'
     Import-DscResource -ModuleName 'xNetworking'
+    Import-DscResource -ModuleName 'cChoco'
 
     # composite resources
     Import-DscResource -ModuleName 'DnnWebserverConfig'
     Import-DscResource -ModuleName 'DnnDatabaseConfig'
     Import-DscResource -ModuleName 'ScriptResources'
     
+    cChocoPackageInstaller InstallSQLEngine
+    {
+        Ensure = 'Present'
+        #Name = "sqlserver2008r2express-engine"
+        Name = 'c:\vagrant\sqlpackages.conf'
+        #Params = " /ConfigurationFile=c:\vagrant\sqlconfig.ini"
+    }
+
+    cChocoPackageInstaller InstallSQLManagementStudio
+    {
+        Ensure = 'Present'
+        Name = "sqlserver2008r2express-managementstudio"
+    }
 
     InstallFileCopy DnnInstallFiles
     {

@@ -9,24 +9,10 @@ Configuration DNNLabConfig
     Import-DscResource -ModuleName 'DnnWebserverConfig'
     Import-DscResource -ModuleName 'DnnDatabaseConfig'
     Import-DscResource -ModuleName 'ScriptResources'
-    
-    cChocoPackageInstaller InstallSQLEngine
-    {
-        Ensure = 'Present'
-        #Name = "sqlserver2008r2express-engine"
-        Name = 'c:\vagrant\sqlpackages.conf'
-        #Params = " /ConfigurationFile=c:\vagrant\sqlconfig.ini"
-    }
-
-    cChocoPackageInstaller InstallSQLManagementStudio
-    {
-        Ensure = 'Present'
-        Name = "sqlserver2008r2express-managementstudio"
-    }
 
     InstallFileCopy DnnInstallFiles
     {
-        Source = 'c:\vagrant\dnn\install\'
+        Source = 'c:\vagrant\dnn\install{0}\' -f $ConfigurationData.DnnSiteData.InstallVersion
         Destination = $ConfigurationData.DnnSiteData.DotNetNukePath
     }
 

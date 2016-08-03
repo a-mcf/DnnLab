@@ -10,6 +10,7 @@
     )
     DnnSiteData = @{
         Name = "lab-a"
+        InstallVersion = '7'
         DotNetNukePath = "c:\inetpub\wwwroot\lab-a"
         Webroot = 'c:\WebRoot'
         SQLServerIP = "127.0.0.1"

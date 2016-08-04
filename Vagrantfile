@@ -15,7 +15,12 @@ Vagrant.configure(2) do |config|
   config.vm.box = "a-mcf/Win2012R2-WMF5-Min"
   
   config.vm.provision "shell", path: "./scripts/Bootstrap.ps1"
+
   
+  config.vm.provider "virtualbox" do |v| 
+    v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+  end
+
   # Run DSC
   config.vm.provision "dsc", run: "always" do |dsc|
 
@@ -28,14 +33,14 @@ Vagrant.configure(2) do |config|
     dsc.module_path = ["dsc/modules"]
 
     # The path relative to `dsc.manifests_path` pointing to the Configuration file
-    dsc.configuration_file  = "DNNLabConfig.ps1"
+    dsc.configuration_file = "DNNLabConfig.ps1"
 
     # The path relative to Vagrantfile pointing to the Configuration Data file
     dsc.configuration_data_file  = "dsc/DNNLabConfig.psd1"
 
     # The Configuration Command to run. Assumed to be the same as the `dsc.configuration_file`
     # (sans extension) if not provided.
-    #dsc.configuration_name = "MyWebsite"
+    # dsc.configuration_name = "MyWebsite"
 
     # Relative path to a pre-generated MOF file.
     #

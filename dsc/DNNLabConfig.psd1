@@ -34,8 +34,6 @@
         )
     }
     
-    # added to make VSCode happyS
-    # I think that there is a better 
-    # way to do this.
+    # fake - added to make VSCode happy.
     ModuleVersion = '1.0'
 }

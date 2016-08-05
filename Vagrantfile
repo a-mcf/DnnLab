@@ -16,7 +16,7 @@ Vagrant.configure(2) do |config|
   
   config.vm.provision "shell", path: "./scripts/Bootstrap.ps1"
 
-  
+  # added to avoid issues while connected to VPN
   config.vm.provider "virtualbox" do |v| 
     v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
   end
@@ -68,8 +68,6 @@ Vagrant.configure(2) do |config|
     # Temporary working directory on the guest machine.
     # dsc.temp_dir = "c:/tmp/vagrant-dsc"
   end
-  
-   config.vm.provision "shell", path: "./scripts/InstallDnn.ps1"
   
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs

@@ -1,32 +1,32 @@
 Configuration DnnDatabase 
 {
     param(
-        $DatabaseName = 'lab-a',
-        $WebUser = 'IIS APPPOOL\DefaultAppPool',
+        $DatabaseName,
+        $WebUser,
         $WebUserLoginType = 'WindowsGroup',
         $Ensure = 'Present'
     )
 
     Import-DscResource -ModuleName 'xSQLServer'
 
-    xSQLServerDatabase DnnInstanceDB
+    xSQLServerDatabase "DnnInstanceDB"
     {
         Database = $DatabaseName
         Ensure = $Ensure
     }
     
-    xSQLServerLogin DnnInstanceSQL
+    xSQLServerLogin "DnnInstanceSQL"
     {
         Name = $WebUser
         LoginType = $WebUserLoginType
     }
     
-    xSQLServerDatabaseRole DnnDbo
+    xSQLServerDatabaseRole "DnnDbo"
     {
         Name = $Webuser
         Database = $DatabaseName
         Role = 'db_owner'
         Ensure = $Ensure
-        DependsOn = '[xSQLServerLogin]DnnInstanceSQL'
+        #DependsOn = "DnnInstanceSQL$($DatabaseName -replace '\W','')"
     }
 }

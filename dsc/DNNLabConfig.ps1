@@ -31,6 +31,7 @@ Configuration DNNLabConfig
             Name = $instance.Name
             HostName = $instance.Name
             Path = $instancePath
+            PortalInfo = $instance.Portal
         }
                 
         cNtfsPermissionEntry "SiteNTFSPermissions$($instance.Name -replace '\W','')"
@@ -54,7 +55,6 @@ Configuration DNNLabConfig
         {
             WebsitePath = $instancePath
             SQLServer = "(local)"
-            #SQLServer = $ConfigurationData.DnnSiteData.Name + "-SQL"
             DatabaseName = $instance.Name
         }
 

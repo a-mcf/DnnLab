@@ -3,7 +3,8 @@ Configuration DnnWebsite
     param(
         $Name = 'lab-a',
         $Path = 'c:\inetpub\wwwroot\lab-a',
-        $HostName
+        $HostName,
+        [Hashtable[]] $PortalInfo
     )
 
     Import-DscResource -ModuleName xWebAdministration
@@ -28,13 +29,15 @@ Configuration DnnWebsite
         PhysicalPath = $Path 
         State = 'Started'
         ApplicationPool = $Name
-        BindingInfo = MSFT_xWebBindingInformation
-                      {
-                         Port = '80'
-                         IPAddress = '*'
-                         HostName = $HostName.ToLower()
-                         Protocol = 'HTTP'
-                      }
+        BindingInfo = $PortalInfo.Foreach({
+            MSFT_xWebBindingInformation
+            {
+                Port = $_.Port
+                IPAddress = $_.IPAddress
+                HostName = $_.HostName
+                Protocol = $_.Protocol
+            }
+        })
         DependsOn = '[xWebsite]DefaultWebSite'
     }   
 }

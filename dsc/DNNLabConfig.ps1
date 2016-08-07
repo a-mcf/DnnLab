@@ -3,7 +3,6 @@ Configuration DNNLabConfig
     Import-DscResource -ModuleName 'PSDesiredStateConfiguration'
     Import-DscResource -ModuleName 'cNtfsAccessControl'
     Import-DscResource -ModuleName 'xNetworking'
-    Import-DscResource -ModuleName 'cChoco'
 
     # composite resources
     Import-DscResource -ModuleName 'DnnWebserverConfig'
@@ -20,21 +19,34 @@ Configuration DNNLabConfig
         $instancePath = $null
         $instancePath = Join-Path $ConfigurationData.Dnn.WebRoot $instance.Name
         
-        InstallFileCopy "DnnInstallFiles$($instance.Name -replace '\W','')"
+        $dnnInstallFiles = "DnnInstallFiles$($instance.Name -replace '\W','')"
+        DnnInstallFiles $dnnInstallFiles
         {
-            Source = 'c:\vagrant\dnn\install{0}\' -f $instance.InstallVersion
+            DnnInstallCachePath = $ConfigurationData.Dnn.Install.CachePath
+            #DownloadUrl = $Configuration.Dnn.Install.DownloadUrl."$($instance.InstallVersion)"
+            DownloadUrl = $ConfigurationData.Dnn.Install.DownloadUrl[$instance.InstallVersion]
+            DnnVersion = $instance.InstallVersion
+        }
+    
+        $installFileCopy = "DnnInstallCopy$($instance.Name -replace '\W','')"
+        InstallFileCopy $installFileCopy
+        {
+            #Source = 'c:\vagrant\dnn\install{0}\' -f $instance.InstallVersion
+            Source = Join-Path $ConfigurationData.Dnn.Install.CachePath  ('\install{0}\' -f $instance.InstallVersion)
             Destination = $instancePath
         }
 
-        DnnWebsite "DnnLabWebsite$($instance.Name -replace '\W','')"
+        $dnnWebsite = "DnnLabWebsite$($instance.Name -replace '\W','')" 
+        DnnWebsite $dnnWebsite
         {
             Name = $instance.Name
             HostName = $instance.Name
             Path = $instancePath
             PortalInfo = $instance.Portal
         }
-                
-        cNtfsPermissionEntry "SiteNTFSPermissions$($instance.Name -replace '\W','')"
+        
+        $ntfsPermissionEntry = "SiteNTFSPermissions$($instance.Name -replace '\W','')"
+        cNtfsPermissionEntry $ntfsPermissionEntry
         {
             Ensure = 'Present'
             Path = $instancePath
@@ -48,17 +60,19 @@ Configuration DNNLabConfig
                     NoPropagateInherit = $false
                 }
             )
-            #DependsOn = '[Script]InstallFileCopy'
+            DependsOn = "[InstallFileCopy]$installFileCopy"
         }
 
-        ConnectionStrings "DnnConnectionString$($instance.Name -replace '\W','')"
+        $connectionStrings = "DnnConnectionString$($instance.Name -replace '\W','')" 
+        ConnectionStrings $connectionStrings
         {
             WebsitePath = $instancePath
             SQLServer = "(local)"
             DatabaseName = $instance.Name
         }
-
-        DnnDatabase "DnnSqlDatabase$($instance.Name -replace '\W','')"
+        
+        $dnnDatabase = "DnnSqlDatabase$($instance.Name -replace '\W','')"
+        DnnDatabase $dnnDatabase
         {
                 DatabaseName = $instance.Name
                 WebUser = "IIS APPPOOL\$($instance.Name)"
@@ -66,14 +80,17 @@ Configuration DNNLabConfig
                 Ensure = 'Present'
         }
 
-        xHostsFile "Hostsfile$($instance.Name -replace '\W','')"
+        #todo loop through bindings
+        $hostsFile = "Hostsfile$($instance.Name -replace '\W','')" 
+        xHostsFile $hostsFile
         {
             HostName = $instance.Name
             IPAddress = "127.0.0.1"
             Ensure = 'Present'
         }
 
-        InstallDnn "Install$($instance.Name)"
+        $installDnn = "Install$($instance.Name)"
+        InstallDnn $installDnn
         {
             Host = $instance.Name
             Path = $instancePath

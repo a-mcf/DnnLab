@@ -15,7 +15,7 @@ Install-Module -Name xSQLServer
 Install-Module -Name xNetworking
 Install-Module -Name cChoco
 
-
+<#
 # download DNN install file if it does not exist
 if (!(Test-Path 'c:\vagrant\dnn\'))
 { 
@@ -52,3 +52,4 @@ if (!(Test-Path -Path "c:\vagrant\dnn\dnnInstall8.zip"))
     (New-Object System.Net.WebClient).DownloadFile($dlUrl,"c:\vagrant\dnn\dnnInstall8.zip")
     Expand-Archive -Path 'c:\vagrant\dnn\dnnInstall8.zip' -DestinationPath 'c:\vagrant\dnn\install8\'
 }
+#>

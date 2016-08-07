@@ -17,7 +17,8 @@ Configuration DnnWebsite
         State = 'Stopped'
     }
 
-    xWebAppPool "AppPool$($Name -replace '\W','')"
+    $xWebAppPool = "AppPool$($Name -replace '\W','')"
+    xWebAppPool $xWebAppPool
     {
         Name = $Name
         Ensure = 'Present'
@@ -38,6 +39,6 @@ Configuration DnnWebsite
                 Protocol = $_.Protocol
             }
         })
-        DependsOn = '[xWebsite]DefaultWebSite'
+        DependsOn = '[xWebsite]DefaultWebSite',"[xWebAppPool]$xWebAppPool"
     }   
 }

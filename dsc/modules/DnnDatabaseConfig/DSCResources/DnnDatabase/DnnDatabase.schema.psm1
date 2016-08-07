@@ -27,6 +27,6 @@ Configuration DnnDatabase
         Database = $DatabaseName
         Role = 'db_owner'
         Ensure = $Ensure
-        #DependsOn = "DnnInstanceSQL$($DatabaseName -replace '\W','')"
+        DependsOn = '[xSqlServerDatabase]DnnInstanceDB', '[xSQLServerLogin]DnnInstanceSQL'
     }
 }

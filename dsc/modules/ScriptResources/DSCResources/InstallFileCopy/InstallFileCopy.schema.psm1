@@ -1,7 +1,7 @@
 Configuration InstallFileCopy 
 {
     param(
-        $Source = 'c:\vagrant\dnn\install\',
+        $Source,
         $Destination
     )
 

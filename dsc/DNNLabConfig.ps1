@@ -23,17 +23,17 @@ Configuration DNNLabConfig
         DnnInstallFiles $dnnInstallFiles
         {
             DnnInstallCachePath = $ConfigurationData.Dnn.Install.CachePath
-            #DownloadUrl = $Configuration.Dnn.Install.DownloadUrl."$($instance.InstallVersion)"
             DownloadUrl = $ConfigurationData.Dnn.Install.DownloadUrl[$instance.InstallVersion]
             DnnVersion = $instance.InstallVersion
+            DependsOn = "[DnnWebServerRoles]DnnLabWebRoles"
         }
     
         $installFileCopy = "DnnInstallCopy$($instance.Name -replace '\W','')"
         InstallFileCopy $installFileCopy
         {
-            #Source = 'c:\vagrant\dnn\install{0}\' -f $instance.InstallVersion
             Source = Join-Path $ConfigurationData.Dnn.Install.CachePath  ('\install{0}\' -f $instance.InstallVersion)
             Destination = $instancePath
+            DependsOn = "[DnnInstallFiles]$dnnInstallFiles"
         }
 
         $dnnWebsite = "DnnLabWebsite$($instance.Name -replace '\W','')" 
@@ -43,6 +43,7 @@ Configuration DNNLabConfig
             HostName = $instance.Name
             Path = $instancePath
             PortalInfo = $instance.Portal
+            DependsOn = "[InstallFileCopy]$installFileCopy"
         }
         
         $ntfsPermissionEntry = "SiteNTFSPermissions$($instance.Name -replace '\W','')"
@@ -60,7 +61,7 @@ Configuration DNNLabConfig
                     NoPropagateInherit = $false
                 }
             )
-            DependsOn = "[InstallFileCopy]$installFileCopy"
+            DependsOn = "[DnnWebSite]$dnnWebsite"
         }
 
         $connectionStrings = "DnnConnectionString$($instance.Name -replace '\W','')" 
@@ -69,6 +70,7 @@ Configuration DNNLabConfig
             WebsitePath = $instancePath
             SQLServer = "(local)"
             DatabaseName = $instance.Name
+            DependsOn = "[InstallFileCopy]$installFileCopy"
         }
         
         $dnnDatabase = "DnnSqlDatabase$($instance.Name -replace '\W','')"
@@ -78,6 +80,7 @@ Configuration DNNLabConfig
                 WebUser = "IIS APPPOOL\$($instance.Name)"
                 WebUserLoginType = 'WindowsGroup'
                 Ensure = 'Present'
+                DependsOn = "[DnnWebSite]$dnnWebsite"
         }
 
         #todo loop through bindings
@@ -94,6 +97,8 @@ Configuration DNNLabConfig
         {
             Host = $instance.Name
             Path = $instancePath
+            DependsOn = "[DnnWebSite]$dnnWebsite","[DnnDatabase]$dnnDatabase",
+                "[xHostsFile]$hostsFile","[ConnectionStrings]$connectionStrings"
         }
     }
 }

@@ -42,5 +42,6 @@ Configuration DnnInstallFiles
         SetScript = {
             Expand-Archive -Path $using:zipPath -DestinationPath $using:extractPath
         }
+        DependsOn = '[Script]DownloadDNN'
     }
 }

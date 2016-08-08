@@ -40,10 +40,10 @@ Configuration DNNLabConfig
         DnnWebsite $dnnWebsite
         {
             Name = $instance.Name
-            HostName = $instance.Name
+            HostName = $instance.Portal[0].HostName
             Path = $instancePath
             PortalInfo = $instance.Portal
-            DependsOn = "[InstallFileCopy]$installFileCopy"
+            DependsOn = "[InstallFileCopy]$installFileCopy","[DnnWebserverRoles]DnnLabWebRoles"
         }
         
         $ntfsPermissionEntry = "SiteNTFSPermissions$($instance.Name -replace '\W','')"
@@ -84,13 +84,15 @@ Configuration DNNLabConfig
         }
 
         #todo loop through bindings
-        $hostsFile = "Hostsfile$($instance.Name -replace '\W','')" 
-        xHostsFile $hostsFile
-        {
-            HostName = $instance.Name
-            IPAddress = "127.0.0.1"
-            Ensure = 'Present'
-        }
+        $instance.Portal.ForEach({
+            $hostsFile = "Hostsfile$($_.HostName -replace '\W','')" 
+            xHostsFile $hostsFile
+            {
+                HostName = $_.HostName
+                IPAddress = "127.0.0.1"
+                Ensure = 'Present'
+            }
+        })
 
         $installDnn = "Install$($instance.Name)"
         InstallDnn $installDnn
@@ -98,7 +100,7 @@ Configuration DNNLabConfig
             Host = $instance.Name
             Path = $instancePath
             DependsOn = "[DnnWebSite]$dnnWebsite","[DnnDatabase]$dnnDatabase",
-                "[xHostsFile]$hostsFile","[ConnectionStrings]$connectionStrings"
+                "[ConnectionStrings]$connectionStrings"
         }
     }
 }

@@ -3,7 +3,16 @@
 A vagrant configuration to build a local DotNetNuke lab. Multiple versions of multiple instances can be speceified 
 by editing the dsc\DNNLabConfiguration.psd1 file.
 
-## Todo:
+## Usage:
+1. Install VirtualBox
+2. Install Vagrant
+3. Download or clone the repository
+4. Install the Vagrant DSC provisioner
+```vagrant plugin install vagrant-ds```
+5. From the repository folder, run:
+```vagrant up```
+
+### Todo:
 - Parameter validation of script resources
 - Support multiple bindings per website / set the hosts file.
 - Pester tests. For now, integration only. Should run after system provisioning.

@@ -1,8 +1,8 @@
 # install SQL
-Write-Host "Installing SQL Express 2008 R2 / .Net Framework 3.5"
-$sqlInstallArgs = ' /ConfigurationFile=c:\vagrant\sqlconfig.ini'
-choco install sqlserver2008r2express-engine -installargs $sqlInstallArgs -y
-choco install sqlserver2008r2express-managementstudio -y
+# Write-Host "Installing SQL Express 2008 R2 / .Net Framework 3.5"
+# $sqlInstallArgs = ' /ConfigurationFile=c:\vagrant\sqlconfig.ini'
+# choco install sqlserver2008r2express-engine -installargs $sqlInstallArgs -y
+# choco install sqlserver2008r2express-managementstudio -y
 
 # DSC modules
 Write-Host "Setting PSGallery as trusted"

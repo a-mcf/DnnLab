@@ -13,8 +13,8 @@ by editing the dsc\DNNLabConfiguration.psd1 file.
 ```vagrant up```
 
 ### Todo:
+- Consider moving chocolatey installs to a script resource (cChoco doesn't support the SQL install file)
 - Parameter validation of script resources
 - Pester tests. For now, integration only. Should run after system provisioning.
-- Cosider moving the required DSC modules locally, and copying them into the filesystem.
-- Consider moving chocolatey installs to a script resource (cChoco doesn't support the SQL install file)
+- Consider moving the required DSC modules locally, and copying them into the filesystem.
 - Start work on automating DNN internals / settings.

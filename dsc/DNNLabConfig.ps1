@@ -13,6 +13,17 @@ Configuration DNNLabConfig
     {
         Ensure = "Present"
     }
+
+    ChocolateyInstalls SQLServer
+    {
+        SQLPackage = "sqlserver2008r2express-engine"
+        SQLPackageConfigFile = "c:\vagrant\sqlconfig.ini"
+    }
+    
+    ChocolateyInstalls SMS
+    {
+        SQLPackage = "sqlserver2008r2express-managementstudio"
+    }
     
     foreach ($instance in $ConfigurationData.Dnn.Instance)
     {

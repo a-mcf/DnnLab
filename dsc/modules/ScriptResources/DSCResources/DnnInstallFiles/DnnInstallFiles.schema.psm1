@@ -3,8 +3,10 @@ Configuration DnnInstallFiles
     param(
         [Parameter(mandatory=$true)]
         $DnnInstallCachePath,
+        
         [Parameter(mandatory=$true)]
         $DnnVersion,
+        
         [Parameter(mandatory=$true)]
         $DownloadUrl
     )

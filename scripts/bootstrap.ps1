@@ -3,7 +3,7 @@
 # $sqlInstallArgs = ' /ConfigurationFile=c:\vagrant\sqlconfig.ini'
 # choco install sqlserver2008r2express-engine -installargs $sqlInstallArgs -y
 # choco install sqlserver2008r2express-managementstudio -y
-
+<#
 # DSC modules
 Write-Host "Setting PSGallery as trusted"
 Set-PackageSource -Name PSGallery -Trusted -ForceBootstrap | Out-Null
@@ -13,4 +13,25 @@ Install-Module -Name xWebadministration
 Install-Module -Name cNtfsAccessControl
 Install-Module -Name xSQLServer
 Install-Module -Name xNetworking
-Install-Module -Name cChoco
+#>
+
+$destinationPath = Join-Path -Path $env:ProgramFiles -ChildPath "WindowsPowerShell\Modules\"
+
+if (Test-Path "c:\vagrant\") 
+{
+    $resourcePath = "c:\vagrant\dsc\resources"
+}
+else 
+{
+    $resourcePath = (Get-Location).Path
+}
+
+$dscResources = Get-ChildItem -Directory -Path $resourcePath
+
+$dscResources | ForEach-Object {
+    if (!(Test-Path (Join-Path -Path $destinationPath -ChildPath $_.Name))) 
+    {
+        Write-Host "Copying $($_.FullName)"
+        Copy-Item -Path $_.FullName -Destination $destinationPath -Recurse
+    }
+}

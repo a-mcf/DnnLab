@@ -1,7 +1,10 @@
 Configuration InstallFileCopy 
 {
     param(
+        [Parameter(Mandatory=$true)]
         $Source,
+        
+        [Parameter(Mandatory=$true)]
         $Destination
     )
 

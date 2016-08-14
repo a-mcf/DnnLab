@@ -1,7 +1,12 @@
 Configuration ConnectionStrings {
     param(
+        [Parameter(Mandatory=$true)]
         $WebsitePath,
+        
+        [Parameter(Mandatory=$true)]
         $SQLServer,
+        
+        [Parameter(Mandatory=$true)]
         $DatabaseName
     )
 

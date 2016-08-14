@@ -1,14 +1,21 @@
 Configuration DnnWebsite
 {
     param(
-        $Name = 'lab-a',
-        $Path = 'c:\inetpub\wwwroot\lab-a',
+        [Parameter(Mandatory=$true)]
+        $Name,
+        
+        [Parameter(Mandatory=$true)]
+        $Path,
+
+        [Parameter(Mandatory=$true)]
         $HostName,
-        [Hashtable[]] $PortalInfo
+
+        [Parameter(Mandatory=$true)]
+        [Hashtable[]]
+        $PortalInfo
     )
 
     Import-DscResource -ModuleName xWebAdministration
-
     
     xWebSite DefaultWebSite
     {

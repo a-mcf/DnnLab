@@ -1,7 +1,10 @@
 Configuration InstallDnn
 {
     param(
+        [Parameter(Mandatory=$true)]
         $Host,
+        
+        [Parameter(Mandatory=$true)]
         $Path
     )
 

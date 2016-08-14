@@ -1,6 +1,8 @@
 Configuration ChocolateyInstalls {
     param(
+        [Parameter(Mandatory=$true)]
         $SQLPackage,
+        
         $SQLPackageConfigFile
     )
     

@@ -1,7 +1,10 @@
 Configuration DnnDatabase 
 {
     param(
+        [Parameter(Mandatory=$true)]
         $DatabaseName,
+        
+        [Parameter(Mandatory=$true)]
         $WebUser,
         $WebUserLoginType = 'WindowsGroup',
         $Ensure = 'Present'

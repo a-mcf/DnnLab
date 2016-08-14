@@ -16,5 +16,4 @@ by editing the dsc\DNNLabConfiguration.psd1 file. The default configuration depl
 - Create a page for the default website that lists all added host headers so that the default site does something.
 - Pester tests. For now, integration only. Should run after system provisioning.
 - AppVeyor support?
-- Consider moving the required DSC modules locally, and copying them into the filesystem.
 - Start work on automating DNN internals / settings.

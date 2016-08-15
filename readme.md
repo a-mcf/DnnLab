@@ -6,11 +6,16 @@ by editing the dsc\DNNLabConfiguration.psd1 file. The default configuration depl
 1. Install VirtualBox
 2. Install Vagrant
 3. Install the Vagrant DSC plugin
+
 ```vagrant plugin install vagrant-dsc```
 4. Download or clone the repository
+
 ```git clone http://github.com/a-mcf/DNNLab```
 5. From the repository folder, run:
 ```vagrant up```
+
+Community Repositories:
+(reference / link here)
 
 ### Todo:
 - Create a page for the default website that lists all added host headers so that the default site does something.

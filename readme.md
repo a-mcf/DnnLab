@@ -22,3 +22,4 @@ Community Repositories:
 - Pester tests. For now, integration only. Should run after system provisioning.
 - AppVeyor support?
 - Start work on automating DNN internals / settings.
+- Consider switching to a build with SQL Express built in?

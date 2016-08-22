@@ -24,6 +24,12 @@ Configuration DNNLabConfig
     {
         SQLPackage = "sqlserver2008r2express-managementstudio"
     }
+
+    DnnIndexPage SiteIndex
+    {
+        InstanceData = $ConfigurationData.Dnn.Instance
+        Path = Join-Path $ConfigurationData.Dnn.WebRoot "DnnSiteIndex"
+    }
     
     foreach ($instance in $ConfigurationData.Dnn.Instance)
     {

@@ -18,13 +18,18 @@ git clone http://github.com/a-mcf/DNNLab
 vagrant up
 ```
 
-Community Repositories:
-(reference / link here)
+## External Dependencies
+The following external dependencies are called during deployment.
+### PowerShell Gallery
+(reference / links here)
+### Chocolatey
+(links to packages here)
 
-### Todo:
-- Pester tests. For now, integration only. Should run after system provisioning.
+## Todo / Known Issues:
+- Add Pester tests. For now, integration only. Should run after system provisioning.
 - AppVeyor support?
 - Start work on automating DNN internals / settings.
-- Add DNN portal support. Currently IIS configuration is supported, but DNN is not modified.
+    - Add DNN portal support. Currently IIS configuration is supported, but DNN is not modified.
+    - Figure out an easy way to load modules.
 - Consider switching to a build with SQL Express built in?
 - Consider adding a shortcut to http://localhost to the vagrant user's desktop.

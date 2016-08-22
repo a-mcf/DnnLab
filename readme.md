@@ -24,6 +24,10 @@ The following external dependencies are called during deployment.
 (reference / links here)
 ### Chocolatey
 (links to packages here)
+### Features on Demand
+The build uses a minimal image, so server roles such as IIS and .Net 3.5 have to be
+downloaded and installed when called by DSC. This burns time when you first ```vagrant up```
+but saves time on the initial download.
 
 ## Todo / Known Issues:
 - Add Pester tests. For now, integration only. Should run after system provisioning.

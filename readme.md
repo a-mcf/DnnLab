@@ -6,10 +6,15 @@ by editing the dsc\DNNLabConfiguration.psd1 file. The default configuration depl
 1. Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 2. Install [Vagrant](https://www.vagrantup.com/downloads.html)
 3. Install the Vagrant DSC plugin
+
 ```vagrant plugin install vagrant-dsc```
+
 4. Download or clone the repository
+
 ```git clone http://github.com/a-mcf/DNNLab```
+
 5. From the repository folder, run:
+
 ```vagrant up```
 
 ## External Dependencies

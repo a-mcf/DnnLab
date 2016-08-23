@@ -16,13 +16,6 @@ Configuration DnnWebsite
     )
 
     Import-DscResource -ModuleName xWebAdministration
-    
-    xWebSite DefaultWebSite
-    {
-        Name = 'Default Web Site'
-        Ensure = 'Present'
-        State = 'Stopped'
-    }
 
     $xWebAppPool = "AppPool$($Name -replace '\W','')"
     xWebAppPool $xWebAppPool

@@ -40,12 +40,14 @@
                         IPAddress = '*'
                         HostName = 'lab-b'
                     }
+                    <# removed until portal configuration is in place.
                     @{
                         Port = 80
                         Protocol = 'HTTP'
                         IPAddress = '*'
                         HostName = 'lab-b-1'
                     }
+                    #>
                 )
             }
         )

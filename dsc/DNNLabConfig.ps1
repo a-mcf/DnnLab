@@ -3,6 +3,7 @@ Configuration DNNLabConfig
     Import-DscResource -ModuleName 'PSDesiredStateConfiguration'
     Import-DscResource -ModuleName 'cNtfsAccessControl'
     Import-DscResource -ModuleName 'xNetworking'
+    Import-DscResource -ModuleName xWebAdministration
 
     # composite resources
     Import-DscResource -ModuleName 'DnnWebserverConfig'
@@ -14,6 +15,21 @@ Configuration DNNLabConfig
         Ensure = "Present"
     }
 
+    xWebSite DefaultWebSite
+    {
+        Name = 'Default Web Site'
+        Ensure = 'Present'
+        State = 'Stopped'
+        DependsOn = "[DnnWebServerRoles]DnnLabWebRoles"
+    }
+
+    DnnIndexPage SiteIndex
+    {
+        InstanceData = $ConfigurationData.Dnn.Instance
+        Path = Join-Path $ConfigurationData.Dnn.WebRoot "DnnSiteIndex"
+        DependsOn = "[xWebsite]DefaultWebsite"
+    }
+
     ChocolateyInstalls SQLServer
     {
         SQLPackage = "sqlserver2008r2express-engine"
@@ -23,12 +39,6 @@ Configuration DNNLabConfig
     ChocolateyInstalls SMS
     {
         SQLPackage = "sqlserver2008r2express-managementstudio"
-    }
-
-    DnnIndexPage SiteIndex
-    {
-        InstanceData = $ConfigurationData.Dnn.Instance
-        Path = Join-Path $ConfigurationData.Dnn.WebRoot "DnnSiteIndex"
     }
     
     foreach ($instance in $ConfigurationData.Dnn.Instance)

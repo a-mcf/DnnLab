@@ -29,14 +29,17 @@ vagrant provision --provision-with dsc
 
 ## External Dependencies
 The following external dependencies are called during deployment.
+
 ### PowerShell Gallery
 - [cNtfsAccessControl](https://github.com/SNikalaichyk/cNtfsAccessControl)
 - [xNetworking](https://github.com/PowerShell/xNetworking)
 - [xSQLServer](https://github.com/PowerShell/xSQLServer)
 - [xWebAdministration](https://github.com/PowerShell/xWebAdministration)
+
 ### Chocolatey
 - [sqlserver2008r2express-engine](https://chocolatey.org/packages/sqlserver2008r2express-engine)
 - [sqlserver2008r2express-managementstudio](https://chocolatey.org/packages/sqlserver2008r2express-engine)
+
 ### Features on Demand
 The build uses a minimal image, so server roles such as IIS and .Net 3.5 have to be
 downloaded and installed when called by DSC. This burns time when you first ```vagrant up```

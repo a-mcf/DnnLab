@@ -1,6 +1,6 @@
 # DNNLab
 A vagrant / DSC configuration to build a local DotNetNuke lab. Multiple versions of multiple instances can be specified 
-by editing the dsc\DNNLabConfiguration.psd1 file. The default configuration deploys both a 7.4.2 and a 8.0.3 instnace.
+by editing the dsc\DNNLabConfiguration.psd1 file. The default configuration deploys both a 7.4.2 and a 8.0.4 instnace.
 
 ## Usage:
 Download and install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
@@ -46,7 +46,7 @@ The following external dependencies are called during deployment.
 ### Features on Demand
 The build uses a minimal image, so server roles such as IIS and .Net 3.5 have to be
 downloaded and installed when called by DSC. This burns time when you first ```vagrant up```
-but saves time on the initial download.
+but saves time on the initial download. Replacing the image with a "minimal IIS" build is planned.
 
 ## Todo / Known Issues:
 - Add Pester tests. For now, integration only. Should run after system provisioning.

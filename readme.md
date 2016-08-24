@@ -22,6 +22,9 @@ From the repository folder, run:
 vagrant up
 ```
 
+Once provisioned, you can see a list of instances / portals created by visiting ```http://localhost``` 
+from the browser inside of the VM.
+
 If you make DSC changes and want to re-run the DSC provisioner, run:
 ```
 vagrant provision --provision-with dsc

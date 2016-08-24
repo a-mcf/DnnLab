@@ -14,6 +14,7 @@
             DownloadUrl = @{
                 "7.4.2" = 'http://download-codeplex.sec.s-msft.com/Download/Release?ProjectName=dotnetnuke&DownloadId=1493875&FileTime=130885394216030000&Build=21031'
                 "8.0.3" = 'http://download-codeplex.sec.s-msft.com/Download/Release?ProjectName=dotnetnuke&DownloadId=1574135&FileTime=131087835783300000&Build=21031'
+                "8.0.4" = "https://github.com/dnnsoftware/Dnn.Platform/releases/download/v8.0.4/DNN_Platform_8.0.4.226_Install.zip"
             }
         }
         WebRoot = 'c:\inetpub\wwwroot'
@@ -32,7 +33,7 @@
             }
             @{
                 Name = "lab-b"
-                InstallVersion = '8.0.3'
+                InstallVersion = '8.0.4'
                 Portal = @(
                     @{
                         Port = 80
@@ -40,7 +41,7 @@
                         IPAddress = '*'
                         HostName = 'lab-b'
                     }
-                    <# removed until portal configuration is in place.
+                    # removed until portal configuration is in place.
                     @{
                         Port = 80
                         Protocol = 'HTTP'

@@ -24,7 +24,7 @@ Configuration DnnWebsite
         Ensure = 'Present'
     }
 
-    xWebsite DemoSite
+    xWebsite DnnSite
     {
         Name = $Name
         PhysicalPath = $Path 
@@ -39,6 +39,6 @@ Configuration DnnWebsite
                 Protocol = $_.Protocol
             }
         })
-        DependsOn = '[xWebsite]DefaultWebSite',"[xWebAppPool]$xWebAppPool"
+        DependsOn = "[xWebAppPool]$xWebAppPool"
     }   
 }

@@ -23,13 +23,35 @@ Configuration ConnectionStrings {
         }
         SetScript = {
             $webConfigXml = (Get-Content $using:webConfigPath) -as [XML]
-            Write-Verbose "Setting connection string: $connectionString"
-            $webConfigXml.configuration.connectionStrings.add.connectionString = $using:connectionString
+            Write-Verbose "Setting connection string: $using:connectionString"
+            
+            ($webConfigXml.configuration.connectionStrings.add | 
+                Where-Object {$_.Name -eq "SiteSqlServer"}).connectionString = $using:connectionString
+            
+            $webConfigXml.configuration.appSettings.add | 
+                Where-Object {$_.key -eq "SiteSqlServer"} | 
+                    ForEach-Object {$_.value = $using:connectionString}
+            
             $webConfigXml.Save($using:webConfigPath)
         }
         TestScript = {
             $webConfigXml = (Get-Content $using:webConfigPath) -as [XML]
-            $webConfigXml.configuration.connectionStrings.add.connectionString -eq $using:connectionString
+            
+            $connectionString = ($webConfigXml.configuration.connectionStrings.add | 
+                Where-Object {$_.Name -eq "SiteSqlServer"}).connectionString -eq $using:connectionString
+            
+            $appSetting = $webConfigXml.configuration.appSettings.add | 
+                Where-Object {$_.key -eq "SiteSqlServer"} | 
+                    ForEach-Object {$_.value -eq $using:connectionString}
+            
+            if ($connectionString -and $appSetting)
+            {
+                $true
+            }
+            else 
+            {
+                $false    
+            }
         }      
     }
 

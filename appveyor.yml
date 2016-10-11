@@ -9,7 +9,7 @@ os: WMF 5
 install:
  - cinst pester -y
  - cinst virtualbox
- - ps: Invoke-Command { cinst vagrant; exit 0 }
+ - cinst vagrant command && exit 0
  - vagrant plugin install vagrant-dsc
 
 build: false

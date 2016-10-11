@@ -5,11 +5,13 @@
 skip_commits:
   message: /updated readme.*/
 os: WMF 5
-
+init:
+ - ps: |
+     cinst pester -y
+     cinst vagrant -y
+     cinst virtualbox
+     refreshenv
 install:
- - cinst pester -y
- - cinst virtualbox
- - cinst vagrant command && exit 0
  - vagrant plugin install vagrant-dsc
 
 build: false

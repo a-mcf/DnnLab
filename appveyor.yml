@@ -11,12 +11,12 @@ init:
      cinst vagrant -y
      cinst virtualbox
      refreshenv
+     vagrant plugin install vagrant-dsc
 install:
- - vagrant plugin install vagrant-dsc
+ - ps: vagrant version
 
 build: false
 
 # Test with native PS version
 test_script:
-  - ps: vagrant version
   - ps: vagrant up

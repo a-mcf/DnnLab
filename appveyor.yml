@@ -9,7 +9,7 @@ os: WMF 5
 install:
  - cinst pester -y
  - cinst virtualbox
- - cinst vagrant
+ - ps: cinst vagrant | out-null
  - vagrant plugin install vagrant-dsc
 
 build: false

@@ -10,7 +10,7 @@ init:
      cinst pester -y
      cinst vagrant -y
      cinst virtualbox
-     $env:Path =+ ";C:\HashiCorp\Vagrant\bin"
+     $env:Path += ";C:\HashiCorp\Vagrant\bin"
      vagrant plugin install vagrant-dsc
 install:
  - ps: vagrant version

@@ -1,6 +1,6 @@
 # DNNLab
 A vagrant / DSC configuration to build a local DotNetNuke lab. Multiple versions of multiple instances can be specified 
-by editing the dsc\DNNLabConfiguration.psd1 file. The default configuration deploys both a 7.4.2 and a 8.0.3 instnace.
+by editing the dsc\DNNLabConfiguration.psd1 file. The default configuration deploys a single instance of 7.4.2 and 8.0.4.
 
 ## Usage:
 Download and install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
@@ -22,6 +22,9 @@ From the repository folder, run:
 vagrant up
 ```
 
+Once provisioned, you can see a list of instances / portals created by visiting ```http://localhost``` 
+from the browser inside of the VM.
+
 If you make DSC changes and want to re-run the DSC provisioner, run:
 ```
 vagrant provision --provision-with dsc
@@ -29,18 +32,25 @@ vagrant provision --provision-with dsc
 
 ## External Dependencies
 The following external dependencies are called during deployment.
+
 ### PowerShell Gallery
 - [cNtfsAccessControl](https://github.com/SNikalaichyk/cNtfsAccessControl)
 - [xNetworking](https://github.com/PowerShell/xNetworking)
 - [xSQLServer](https://github.com/PowerShell/xSQLServer)
 - [xWebAdministration](https://github.com/PowerShell/xWebAdministration)
+
 ### Chocolatey
 - [sqlserver2008r2express-engine](https://chocolatey.org/packages/sqlserver2008r2express-engine)
 - [sqlserver2008r2express-managementstudio](https://chocolatey.org/packages/sqlserver2008r2express-engine)
+
 ### Features on Demand
 The build uses a minimal image, so server roles such as IIS and .Net 3.5 have to be
 downloaded and installed when called by DSC. This burns time when you first ```vagrant up```
+<<<<<<< HEAD
 but saves time on the initial download. This will likely be changed in a future release.
+=======
+but saves time on the initial download. Replacing the image with a "minimal IIS" build is planned.
+>>>>>>> master
 
 ## Todo / Known Issues:
 - Add Pester tests. For now, integration only. Should run after system provisioning.

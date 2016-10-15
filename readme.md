@@ -46,17 +46,16 @@ The following external dependencies are called during deployment.
 ### Features on Demand
 The build uses a minimal image, so server roles such as IIS and .Net 3.5 have to be
 downloaded and installed when called by DSC. This burns time when you first ```vagrant up```
-<<<<<<< HEAD
-but saves time on the initial download. This will likely be changed in a future release.
-=======
 but saves time on the initial download. Replacing the image with a "minimal IIS" build is planned.
->>>>>>> master
 
 ## Todo / Known Issues:
 - Add Pester tests. For now, integration only. Should run after system provisioning.
-- AppVeyor support?
 - Start work on automating DNN internals / settings.
     - Add DNN portal support. Currently IIS configuration is supported, but DNN is not modified.
     - Figure out an easy way to load modules.
-- Consider switching to a build with SQL Express built in?
+- Add options for different versions of SQL, move install options into PSD1 file.
+- Consider using a customized, location version of Chocolatey for SQL install, or just use the package management resource.
 - Consider adding a shortcut to http://localhost to the vagrant user's desktop.
+- Consider restructuring be compatible with Lability.
+- Switch to using the 'high quality' WebAdministration module.
+- AppVeyor support?

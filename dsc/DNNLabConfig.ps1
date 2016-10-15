@@ -4,6 +4,7 @@ Configuration DNNLabConfig
     Import-DscResource -ModuleName 'cNtfsAccessControl'
     Import-DscResource -ModuleName 'xNetworking'
     Import-DscResource -ModuleName xWebAdministration
+    Import-DscResource -ModuleName xPSDesiredStateConfiguration
 
     # composite resources
     Import-DscResource -ModuleName 'DnnWebserverConfig'
@@ -30,6 +31,7 @@ Configuration DNNLabConfig
         DependsOn = "[xWebsite]DefaultWebsite"
     }
 
+    <#
     ChocolateyInstalls SQLServer
     {
         SQLPackage = "sqlserver2008r2express-engine"
@@ -39,6 +41,43 @@ Configuration DNNLabConfig
     ChocolateyInstalls SMS
     {
         SQLPackage = "sqlserver2008r2express-managementstudio"
+    }
+    #>
+
+    xRemoteFile SqlEngineMsi
+    {
+        Uri = $ConfigurationData.Sql.Engine.DownloadUrl
+        DestinationPath = Join-Path $ConfigurationData.Dnn.Install.CachePath "SqlEngine.exe"
+        MatchSource = $true
+    }
+
+    xRemoteFile SqlSmsMsi
+    {
+        Uri = $ConfigurationData.Sql.Engine.DownloadUrl
+        DestinationPath = Join-Path $ConfigurationData.Dnn.Install.CachePath "Sms.exe"
+        MatchSource = $true
+    }
+
+    File SqlInstallConfig
+    {
+        Contents = $ConfigurationData.Sql.Engine.InstallConfigFile
+        DestinationPath = Join-Path $ConfigurationData.Dnn.Install.CachePath "sqlinstallconfig.ini"
+        MatchSource = $true
+    }
+
+    Package SqlEngine
+    {
+        Name = "SQL Server DB Engine"
+        Path = Join-Path $ConfigurationData.Dnn.Install.CachePath "SqlEngine.exe"
+        Arguments = "/Action=Install /Role=AllFeatures_WithDefaults /IACCEPTSQLSERVERLICENSETERMS /Hideconsole /Q /ConfigurationFile=$(Join-Path $ConfigurationData.Dnn.Install.CachePath 'sqlinstallconfig.ini')"
+        ProductId = 'C3525BF7-3698-4CD3-A8C3-69BD6F57BA3B'
+    }
+
+    Package SqlSms
+    {
+        Name = "SQL Server Management Studio"
+        Path = '51E5BC99-A087-4CFF-8D93-462903EA7E12'
+        ProductId = "72AB7E6F-BC24-481E-8C45-1AB5B3DD795D"
     }
     
     foreach ($instance in $ConfigurationData.Dnn.Instance)

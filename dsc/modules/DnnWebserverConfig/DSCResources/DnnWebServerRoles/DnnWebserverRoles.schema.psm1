@@ -42,5 +42,11 @@ Configuration DnnWebserverRoles
     {
         Name = 'Web-Static-Content'
         Ensure = 'Present'
-    }   
+    }
+
+    WindowsFeature NetFrame35
+    {
+        Name = 'Net-Framework-Core'
+        Ensure = 'Present'
+    }
 }

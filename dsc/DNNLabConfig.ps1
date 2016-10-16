@@ -48,16 +48,18 @@ Configuration DNNLabConfig
     {
         Uri = $ConfigurationData.Sql.Engine.DownloadUrl
         DestinationPath = Join-Path $ConfigurationData.Dnn.Install.CachePath "SqlEngine.exe"
-        MatchSource = $true
+        MatchSource = $false
     }
 
+    <#
     xRemoteFile SqlSmsMsi
     {
         Uri = $ConfigurationData.Sql.Engine.DownloadUrl
         DestinationPath = Join-Path $ConfigurationData.Dnn.Install.CachePath "Sms.exe"
         MatchSource = $true
     }
-
+#>
+    $sqlInstallConfigFile = Join-Path $ConfigurationData.Dnn.Install.CachePath 'sqlinstallconfig.ini'
     File SqlInstallConfig
     {
         Contents = $ConfigurationData.Sql.Engine.InstallConfigFile
@@ -69,17 +71,17 @@ Configuration DNNLabConfig
     {
         Name = "SQL Server DB Engine"
         Path = Join-Path $ConfigurationData.Dnn.Install.CachePath "SqlEngine.exe"
-        Arguments = "/Action=Install /Role=AllFeatures_WithDefaults /IACCEPTSQLSERVERLICENSETERMS /Hideconsole /Q /ConfigurationFile=$(Join-Path $ConfigurationData.Dnn.Install.CachePath 'sqlinstallconfig.ini')"
+        Arguments = "/Action=Install /Role=AllFeatures_WithDefaults /IACCEPTSQLSERVERLICENSETERMS /Hideconsole /Q /ConfigurationFile=$sqlInstallConfigFile"
         ProductId = 'C3525BF7-3698-4CD3-A8C3-69BD6F57BA3B'
     }
-
+    <#
     Package SqlSms
     {
         Name = "SQL Server Management Studio"
         Path = '51E5BC99-A087-4CFF-8D93-462903EA7E12'
         ProductId = "72AB7E6F-BC24-481E-8C45-1AB5B3DD795D"
     }
-    
+    #>
     foreach ($instance in $ConfigurationData.Dnn.Instance)
     {
         $instancePath = $null
@@ -146,7 +148,7 @@ Configuration DNNLabConfig
                 WebUser = "IIS APPPOOL\$($instance.Name)"
                 WebUserLoginType = 'WindowsGroup'
                 Ensure = 'Present'
-                DependsOn = "[DnnWebSite]$dnnWebsite"
+                DependsOn = "[DnnWebSite]$dnnWebsite","[Package]SqlEngine"
         }
 
         #todo loop through bindings

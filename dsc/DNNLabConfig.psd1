@@ -56,8 +56,13 @@
     }
     Sql = @{
         Engine = @{
-            DownloadUrl = 'https://download.microsoft.com/download/0/F/D/0FD88169-F86F-46E1-8B3B-56C44F6E9505/SQLEXPR_x64_ENU.exe'
-            #DownloadUrl = 'http://download.microsoft.com/download/0/4/B/04BE03CD-EAF3-4797-9D8D-2E08E316C998/SQLEXPR_x64_ENU.exe'
+            # SQL Express 2012 SP3
+            # DownloadUrl = 'https://download.microsoft.com/download/F/6/7/F673709C-D371-4A64-8BF9-C1DD73F60990/ENU/x64/SQLEXPR_x64_ENU.exe'
+            # ProductId = ??
+
+            # SQL Express 2008 R2 SP2
+            DownloadUrl = 'https://download.microsoft.com/download/0/4/B/04BE03CD-EAF3-4797-9D8D-2E08E316C998/SQLEXPR_x64_ENU.exe'
+            ProductId = 'C3525BF7-3698-4CD3-A8C3-69BD6F57BA3B'
             InstallConfigFile = @'
 [SQLServer2008]
 INSTANCEID="MSSQLSERVER"
@@ -84,6 +89,7 @@ BROWSERSVCSTARTUPTYPE="Disabled"
         }
         Sms = @{
             DownloadUrl = 'http://download.microsoft.com/download/0/4/B/04BE03CD-EAF3-4797-9D8D-2E08E316C998/SQLManagementStudio_x64_ENU.exe'
+            ProductId = '72AB7E6F-BC24-481E-8C45-1AB5B3DD795D'
         }
 
     }

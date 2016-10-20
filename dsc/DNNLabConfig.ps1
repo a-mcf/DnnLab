@@ -11,6 +11,11 @@ Configuration DNNLabConfig
     Import-DscResource -ModuleName 'DnnDatabaseConfig'
     Import-DscResource -ModuleName 'ScriptResources'
 
+    <#
+        can also try $global:DSCMachineStatus = 0
+        if setting the LCM fails
+    #>
+
     DnnWebserverRoles DnnLabWebRoles
     {
         Ensure = "Present"
@@ -31,19 +36,6 @@ Configuration DNNLabConfig
         DependsOn = "[xWebsite]DefaultWebsite"
     }
 
-    <#
-    ChocolateyInstalls SQLServer
-    {
-        SQLPackage = "sqlserver2008r2express-engine"
-        SQLPackageConfigFile = "c:\vagrant\sqlconfig.ini"
-    }
-    
-    ChocolateyInstalls SMS
-    {
-        SQLPackage = "sqlserver2008r2express-managementstudio"
-    }
-    #>
-
     xRemoteFile SqlEngineMsi
     {
         Uri = $ConfigurationData.Sql.Engine.DownloadUrl
@@ -51,7 +43,6 @@ Configuration DNNLabConfig
         MatchSource = $false
     }
 
-    
     xRemoteFile SqlSmsMsi
     {
         Uri = $ConfigurationData.Sql.Sms.DownloadUrl
@@ -59,29 +50,20 @@ Configuration DNNLabConfig
         MatchSource = $false
     }
 
-    $sqlInstallConfigFile = Join-Path $ConfigurationData.Dnn.Install.CachePath 'sqlinstallconfig.ini'
-    File SqlInstallConfig
-    {
-        Contents = $ConfigurationData.Sql.Engine.InstallConfigFile
-        DestinationPath = Join-Path $ConfigurationData.Dnn.Install.CachePath "sqlinstallconfig.ini"
-        MatchSource = $true
-    }
-
+    <#
     Package SqlEngine
     {
         Name = "SQL Server DB Engine"
         Path = Join-Path $ConfigurationData.Dnn.Install.CachePath "SqlEngine.exe"
-        Arguments = '/Action=Install /q /IAcceptSQLServerLicenseTerms /InstanceName=MSSQLSERVER /ROLE=AllFeatures_WithDefaults /SQLSYSADMINACCOUNTS="BUILTIN\Administrators"'
+        Arguments = $ConfigurationData.Sql.Engine.Arguments
         ProductId = $ConfigurationData.Sql.Engine.ProductId
-        #ProductId = 'C3525BF7-3698-4CD3-A8C3-69BD6F57BA3B'
     }
-    
-    Package SqlSms
+    #>
+
+    SqlInstall SqlExpress
     {
-        Name = "SQL Server Management Studio"
-        Path = Join-Path $ConfigurationData.Dnn.Install.CachePath "Sms.exe"
-        Arguments = '/Action=Install /FEATURES=CONN,BC,SSMS /IACCEPTSQLSERVERLICENSETERMS /Q'
-        ProductId = $ConfigurationData.Sql.Sms.ProductId
+        Path = Join-Path $ConfigurationData.Dnn.Install.CachePath "SqlEngine.exe"
+        Arguments = $ConfigurationData.Sql.Engine.Arguments
     }
     
     foreach ($instance in $ConfigurationData.Dnn.Instance)
@@ -150,7 +132,7 @@ Configuration DNNLabConfig
                 WebUser = "IIS APPPOOL\$($instance.Name)"
                 WebUserLoginType = 'WindowsGroup'
                 Ensure = 'Present'
-                DependsOn = "[DnnWebSite]$dnnWebsite","[Package]SqlEngine"
+                DependsOn = "[DnnWebSite]$dnnWebsite","[SqlInstall]SqlExpress"
         }
 
         #todo loop through bindings
@@ -173,4 +155,14 @@ Configuration DNNLabConfig
                 "[ConnectionStrings]$connectionStrings"
         }
     }
+
+    <#
+    Package SqlSms
+    {
+        Name = "SQL Server Management Studio"
+        Path = Join-Path $ConfigurationData.Dnn.Install.CachePath "Sms.exe"
+        Arguments = $ConfigurationData.Sql.Sms.Arguments
+        ProductId = $ConfigurationData.Sql.Sms.ProductId
+    }
+    #>
 }

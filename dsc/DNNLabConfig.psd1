@@ -61,37 +61,16 @@
             # ProductId = ??
 
             # SQL Express 2008 R2 SP2
-            DownloadUrl = 'https://download.microsoft.com/download/0/4/B/04BE03CD-EAF3-4797-9D8D-2E08E316C998/SQLEXPR_x64_ENU.exe'
+            DownloadUrl = 'https://download.microsoft.com/download/0/4/B/04BE03CD-EAF3-4797-9D8D-2E08E316C998/SQLEXPRWT_x64_ENU.exe'
+            # engine -DownloadUrl = 'https://download.microsoft.com/download/0/4/B/04BE03CD-EAF3-4797-9D8D-2E08E316C998/SQLEXPR_x64_ENU.exe'
             ProductId = 'C3525BF7-3698-4CD3-A8C3-69BD6F57BA3B'
-            InstallConfigFile = @'
-[SQLServer2008]
-INSTANCEID="MSSQLSERVER"
-ACTION="Install"
-FEATURES="SQLENGINE"
-HELP="False"
-INDICATEPROGRESS="False"
-X86="False"
-ERRORREPORTING="False"
-SQMREPORTING="False"
-INSTANCENAME="MSSQLSERVER"
-SQLSVCSTARTUPTYPE="Automatic"
-ENABLERANU="True"
-SQLCOLLATION="SQL_Latin1_General_CP1_CI_AS"
-SQLSVCACCOUNT="NT AUTHORITY\NETWORK SERVICE"
-SQLSYSADMINACCOUNTS="BUILTIN\ADMINISTRATORS"
-SECURITYMODE="SQL"
-ADDCURRENTUSERASSQLADMIN="True"
-SAPWD="Vagrant2016!"
-TCPENABLED="1"
-NPENABLED="0"
-BROWSERSVCSTARTUPTYPE="Disabled"
-'@   
-        }
+            Arguments = '/Action=Install /q /IAcceptSQLServerLicenseTerms /InstanceName=MSSQLSERVER /ROLE=AllFeatures_WithDefaults /SQLSYSADMINACCOUNTS="BUILTIN\Administrators" /ADDCURRENTUSERASSQLADMIN="True"'        }
         Sms = @{
+            # SQL Express Management Studio 2008 R2
             DownloadUrl = 'http://download.microsoft.com/download/0/4/B/04BE03CD-EAF3-4797-9D8D-2E08E316C998/SQLManagementStudio_x64_ENU.exe'
             ProductId = '72AB7E6F-BC24-481E-8C45-1AB5B3DD795D'
+            Arguments = '/Action=Install /FEATURES=CONN,BC,SSMS /IACCEPTSQLSERVERLICENSETERMS /Q'
         }
-
     }
     
     # fake - added to make VSCode happy.

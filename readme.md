@@ -29,6 +29,18 @@ If you make DSC changes and want to re-run the DSC provisioner, run:
 ```
 vagrant provision --provision-with dsc
 ```
+## Credentials
+As is customary with Vagrant builds, the username and password of the OS are:
+```
+username: vagrant
+password: vagrant
+```
+
+The DNN installations use the default credentials:
+```
+username: host
+password: dnnhost
+```
 
 ## External Dependencies
 The following external dependencies are called during deployment.

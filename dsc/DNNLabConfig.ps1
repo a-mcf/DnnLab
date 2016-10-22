@@ -39,10 +39,11 @@ Configuration DNNLabConfig
     xRemoteFile SqlEngineMsi
     {
         Uri = $ConfigurationData.Sql.Engine.DownloadUrl
-        DestinationPath = Join-Path $ConfigurationData.Dnn.Install.CachePath "SqlEngine.exe"
+        DestinationPath = Join-Path $ConfigurationData.Dnn.Install.CachePath "SqlExpress.exe"
         MatchSource = $false
     }
 
+    <#
     xRemoteFile SqlSmsMsi
     {
         Uri = $ConfigurationData.Sql.Sms.DownloadUrl
@@ -62,7 +63,7 @@ Configuration DNNLabConfig
 
     SqlInstall SqlExpress
     {
-        Path = Join-Path $ConfigurationData.Dnn.Install.CachePath "SqlEngine.exe"
+        Path = Join-Path $ConfigurationData.Dnn.Install.CachePath "SqlExpress.exe"
         Arguments = $ConfigurationData.Sql.Engine.Arguments
     }
     

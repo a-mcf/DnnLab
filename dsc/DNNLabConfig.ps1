@@ -1,5 +1,6 @@
 Configuration DNNLabConfig
 {
+    # resources from the gallery
     Import-DscResource -ModuleName 'PSDesiredStateConfiguration'
     Import-DscResource -ModuleName 'cNtfsAccessControl'
     Import-DscResource -ModuleName 'xNetworking'
@@ -10,11 +11,6 @@ Configuration DNNLabConfig
     Import-DscResource -ModuleName 'DnnWebserverConfig'
     Import-DscResource -ModuleName 'DnnDatabaseConfig'
     Import-DscResource -ModuleName 'ScriptResources'
-
-    <#
-        can also try $global:DSCMachineStatus = 0
-        if setting the LCM fails
-    #>
 
     DnnWebserverRoles DnnLabWebRoles
     {
@@ -36,35 +32,19 @@ Configuration DNNLabConfig
         DependsOn = "[xWebsite]DefaultWebsite"
     }
 
-    xRemoteFile SqlEngineMsi
+    $sqlInstallFileName = Join-Path $ConfigurationData.Dnn.Install.CachePath "SqlExpress.exe"
+    xRemoteFile SqlInstallFile
     {
         Uri = $ConfigurationData.Sql.Engine.DownloadUrl
-        DestinationPath = Join-Path $ConfigurationData.Dnn.Install.CachePath "SqlExpress.exe"
+        DestinationPath = $sqlInstallFileName 
         MatchSource = $false
     }
-
-    <#
-    xRemoteFile SqlSmsMsi
-    {
-        Uri = $ConfigurationData.Sql.Sms.DownloadUrl
-        DestinationPath = Join-Path $ConfigurationData.Dnn.Install.CachePath "Sms.exe"
-        MatchSource = $false
-    }
-
-    <#
-    Package SqlEngine
-    {
-        Name = "SQL Server DB Engine"
-        Path = Join-Path $ConfigurationData.Dnn.Install.CachePath "SqlEngine.exe"
-        Arguments = $ConfigurationData.Sql.Engine.Arguments
-        ProductId = $ConfigurationData.Sql.Engine.ProductId
-    }
-    #>
 
     SqlInstall SqlExpress
     {
-        Path = Join-Path $ConfigurationData.Dnn.Install.CachePath "SqlExpress.exe"
+        Path = $sqlInstallFileName
         Arguments = $ConfigurationData.Sql.Engine.Arguments
+        DependsOn = "[xRemoteFile]SqlInstallFile"
     }
     
     foreach ($instance in $ConfigurationData.Dnn.Instance)
@@ -136,7 +116,6 @@ Configuration DNNLabConfig
                 DependsOn = "[DnnWebSite]$dnnWebsite","[SqlInstall]SqlExpress"
         }
 
-        #todo loop through bindings
         $instance.Portal.ForEach({
             $hostsFile = "Hostsfile$($_.HostName -replace '\W','')" 
             xHostsFile $hostsFile
@@ -156,14 +135,4 @@ Configuration DNNLabConfig
                 "[ConnectionStrings]$connectionStrings"
         }
     }
-
-    <#
-    Package SqlSms
-    {
-        Name = "SQL Server Management Studio"
-        Path = Join-Path $ConfigurationData.Dnn.Install.CachePath "Sms.exe"
-        Arguments = $ConfigurationData.Sql.Sms.Arguments
-        ProductId = $ConfigurationData.Sql.Sms.ProductId
-    }
-    #>
 }

@@ -10,7 +10,7 @@
     )
     Dnn = @{
         Install = @{
-            CachePath = 'c:\vagrant\dnn'
+            CachePath = 'c:\vagrant\installCache'
             DownloadUrl = @{
                 "7.4.2" = 'http://download-codeplex.sec.s-msft.com/Download/Release?ProjectName=dotnetnuke&DownloadId=1493875&FileTime=130885394216030000&Build=21031'
                 "8.0.3" = 'http://download-codeplex.sec.s-msft.com/Download/Release?ProjectName=dotnetnuke&DownloadId=1574135&FileTime=131087835783300000&Build=21031'

@@ -14,7 +14,7 @@ Configuration DnnInstallFiles
     $zipPath = Join-Path -Path $DnnInstallCachePath -ChildPath "\dnnInstall$($DnnVersion).zip"
     $extractPath = Join-Path -Path $DnnInstallCachePath -ChildPath "\install$($DnnVersion)"
     
-    Write-Verbose "Downloading DNN $($DnnVersion) to $zipPath"
+    
     Script DownloadDNN
     {
         GetScript = {
@@ -25,6 +25,7 @@ Configuration DnnInstallFiles
             {
                 mkdir $using:DnnInstallCachePath
             }
+            Write-Verbose "Downloading DNN $($using:DnnVersion) to $using:zipPath"
             (New-Object System.Net.WebClient).DownloadFile($using:DownloadUrl,$using:zipPath)
         }
         TestScript = {
@@ -32,7 +33,6 @@ Configuration DnnInstallFiles
         }
     }
 
-    Write-Verbose "Extracting $zipPath to $extractPath"
     Script ExtractDnn
     {
         GetScript = {
@@ -42,7 +42,10 @@ Configuration DnnInstallFiles
             Test-Path -Path (Join-Path $using:extractPath "web.config")
         }
         SetScript = {
-            Expand-Archive -Path $using:zipPath -DestinationPath $using:extractPath
+            Write-Verbose "Extracting $using:zipPath to $using:extractPath"
+            #Expand-Archive -Path $using:zipPath -DestinationPath $using:extractPath -Force
+            Add-Type -AssemblyName "System.IO.Compression.FileSystem"
+            [System.IO.Compression.ZipFile]::ExtractToDirectory($using:zipPath, $using:extractPath)
         }
         DependsOn = '[Script]DownloadDNN'
     }

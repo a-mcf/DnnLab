@@ -61,6 +61,7 @@ downloaded and installed when called by DSC. This burns time when you first ```v
 but saves time on the initial download. Replacing the image with a "minimal IIS" build is planned.
 
 ## Todo / Known Issues:
+- Sometimes the resource hangs while expanding the DNN install files. The reason for this is currently unknown.
 - Add Pester tests. For now, integration only. Should run after system provisioning.
 - Start work on automating DNN internals / settings.
     - Add DNN portal support. Currently IIS configuration is supported, but DNN is not modified.

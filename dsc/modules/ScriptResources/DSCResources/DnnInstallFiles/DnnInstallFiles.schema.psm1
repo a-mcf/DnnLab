@@ -45,6 +45,11 @@ Configuration DnnInstallFiles
             {
                 Write-Verbose "Web.Config exists, assuming archive has been extracted"
             }
+            else 
+            {
+                Write-Verbose "Web.Config does not exist, archive must be extracted."    
+            }
+            $webConfigExists
         }
         SetScript = {
             Write-Verbose "Extracting $using:zipPath to $using:extractPath"

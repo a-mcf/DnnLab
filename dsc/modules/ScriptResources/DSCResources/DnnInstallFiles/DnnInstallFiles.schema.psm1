@@ -52,8 +52,16 @@ Configuration DnnInstallFiles
             $webConfigExists
         }
         SetScript = {
-            Write-Verbose "Extracting $using:zipPath to $using:extractPath"
+            # this seems to hang. Dunno why.
             #Expand-Archive -Path $using:zipPath -DestinationPath $using:extractPath -Force
+            
+            if (Test-Path -Path $using:extractPath)
+            {
+                Write-Verbose "Removing directory found at $($using:extractPath)"
+                Remove-Item -Path $using:extractPath -Recurse
+            }
+            
+            Write-Verbose "Extracting $using:zipPath to $using:extractPath"
             Add-Type -AssemblyName "System.IO.Compression.FileSystem"
             [System.IO.Compression.ZipFile]::ExtractToDirectory($using:zipPath, $using:extractPath)
         }

@@ -39,7 +39,12 @@ Configuration DnnInstallFiles
             ExtractedPathExists = Test-Path -Path (Join-Path $using:extractPath "web.config") 
         }
         TestScript = {
-            Test-Path -Path (Join-Path $using:extractPath "web.config")
+            $webConfigExists = Test-Path -Path (Join-Path $using:extractPath "web.config")
+
+            if ($webConfigExists)
+            {
+                Write-Verbose "Web.Config exists, assuming archive has been extracted"
+            }
         }
         SetScript = {
             Write-Verbose "Extracting $using:zipPath to $using:extractPath"

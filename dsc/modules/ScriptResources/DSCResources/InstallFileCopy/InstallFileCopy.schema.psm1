@@ -16,6 +16,7 @@ Configuration InstallFileCopy
             }
         }
         SetScript = {
+            Write-Verbose "Copying $($using:Source) to $($using:Destination)"
             Copy-Item -Recurse -Path $using:Source -Destination $using:Destination
         }
         TestScript = {

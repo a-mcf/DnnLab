@@ -33,10 +33,12 @@ Configuration SqlInstall
             $productId = Get-WmiObject -Class Win32_Product | Where-Object { $_.IdentifyingNumber -eq "{$($using:Arguments)}" }
             if ($productId)
             {
+                Write-Verbose "$productId found."
                 $true
             }
             else 
             {
+                Write-Verbose "$productId not found."
                 $false    
             }
         }

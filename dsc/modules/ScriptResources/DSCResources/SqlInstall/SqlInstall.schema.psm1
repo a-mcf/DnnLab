@@ -22,6 +22,7 @@ Configuration SqlInstall
             }
         }
         SetScript = {
+            Write-Verbose "Performing installation"
             Start-Process -FilePath $using:Path -ArgumentList $using:Arguments -Wait
             if ($using:ValidExitCode -contains $LASTEXITCODE) 
             {

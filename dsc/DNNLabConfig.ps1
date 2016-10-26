@@ -44,6 +44,7 @@ Configuration DNNLabConfig
     {
         Path = $sqlInstallFileName
         Arguments = $ConfigurationData.Sql.Engine.Arguments
+        ProductId = $ConfigurationData.Sql.Engine.ProductId
         DependsOn = "[xRemoteFile]SqlInstallFile"
     }
     

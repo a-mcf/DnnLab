@@ -7,11 +7,14 @@ Configuration SqlInstall
         [Parameter(Mandatory=$true)]
         $Arguments,
 
+        [Parameter(Mandatory=$true)]
+        $ProductId,
+
         [Int[]]
         $ValiExitCode = @(0)
     )
 
-    Script InstallDnn
+    Script InstallSql
     {
         GetScript = {
             @{
@@ -30,7 +33,7 @@ Configuration SqlInstall
             }
         }
         TestScript = {
-            $productId = Get-WmiObject -Class Win32_Product | Where-Object { $_.IdentifyingNumber -eq "{$($using:Arguments)}" }
+            $productId = Get-WmiObject -Class Win32_Product | Where-Object { $_.IdentifyingNumber -eq "{$($using:ProductId)}" }
             if ($productId)
             {
                 Write-Verbose "$productId found."

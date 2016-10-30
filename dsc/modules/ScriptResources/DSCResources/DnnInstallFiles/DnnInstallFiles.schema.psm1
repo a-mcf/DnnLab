@@ -8,12 +8,14 @@ Configuration DnnInstallFiles
         $DnnVersion,
         
         [Parameter(mandatory=$true)]
+        $DownloadCachePath,
+        
+        [Parameter(mandatory=$true)]
         $DownloadUrl
     )
 
-    $zipPath = Join-Path -Path $DnnInstallCachePath -ChildPath "\dnnInstall$($DnnVersion).zip"
+    $zipPath = Join-Path -Path $DownloadCachePath -ChildPath "\dnnInstall$($DnnVersion).zip"
     $extractPath = Join-Path -Path $DnnInstallCachePath -ChildPath "\install$($DnnVersion)"
-    
     
     Script DownloadDNN
     {
@@ -21,9 +23,9 @@ Configuration DnnInstallFiles
             ZipExists = Test-Path -Path $using:zipPath
         }
         SetScript = {
-            if (!(Test-Path $using:DnnInstallCachePath))
+            if (!(Test-Path $using:DownloadCachePath))
             {
-                mkdir $using:DnnInstallCachePath
+                mkdir $using:DownloadCachePath
             }
             Write-Verbose "Downloading DNN $($using:DnnVersion) to $using:zipPath"
             (New-Object System.Net.WebClient).DownloadFile($using:DownloadUrl,$using:zipPath)

@@ -32,7 +32,7 @@ Configuration DNNLabConfig
         DependsOn = "[xWebsite]DefaultWebsite"
     }
 
-    $sqlInstallFileName = Join-Path $ConfigurationData.Dnn.Install.CachePath "SqlExpress.exe"
+    $sqlInstallFileName = Join-Path $ConfigurationData.DownloadCachePath "SqlExpress.exe"
     xRemoteFile SqlInstallFile
     {
         Uri = $ConfigurationData.Sql.Engine.DownloadUrl
@@ -57,6 +57,7 @@ Configuration DNNLabConfig
         DnnInstallFiles $dnnInstallFiles
         {
             DnnInstallCachePath = $ConfigurationData.Dnn.Install.CachePath
+            DownloadCachePath = $ConfigurationData.DownloadCachePath
             DownloadUrl = $ConfigurationData.Dnn.Install.DownloadUrl[$instance.InstallVersion]
             DnnVersion = $instance.InstallVersion
             DependsOn = "[DnnWebServerRoles]DnnLabWebRoles"

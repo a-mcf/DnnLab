@@ -42,32 +42,27 @@ username: host
 password: dnnhost
 ```
 
-## External Dependencies
-The following external dependencies are called during deployment.
+## External Downloads
 
-### PowerShell Gallery
-- [cNtfsAccessControl](https://github.com/SNikalaichyk/cNtfsAccessControl)
-- [xNetworking](https://github.com/PowerShell/xNetworking)
-- [xSQLServer](https://github.com/PowerShell/xSQLServer)
-- [xWebAdministration](https://github.com/PowerShell/xWebAdministration)
-
-### Chocolatey
-- [sqlserver2008r2express-engine](https://chocolatey.org/packages/sqlserver2008r2express-engine)
-- [sqlserver2008r2express-managementstudio](https://chocolatey.org/packages/sqlserver2008r2express-engine)
+### Vagrant Box
+The environment currently uses a minimal Vagrant box. You can find the image 
+[here](https://atlas.hashicorp.com/a-mcf/boxes/Win2012R2-WMF5-min).
 
 ### Features on Demand
 The build uses a minimal image, so server roles such as IIS and .Net 3.5 have to be
 downloaded and installed when called by DSC. This burns time when you first ```vagrant up```
 but saves time on the initial download. Replacing the image with a "minimal IIS" build is planned.
 
+### SQL Express
+The build currently uses Microsoft SQL Express 2008 R2. This version was selected to keep the download
+small while still including SQL Server Management Studio.
+
 ## Todo / Known Issues:
-- Occasionally, the build hangs while expanding the DNN install files. The reason for this is currently unknown.
 - Add Pester tests. For now, integration only. Should run after system provisioning.
 - Start work on automating DNN internals / settings.
     - Add DNN portal support. Currently IIS configuration is supported, but DNN is not modified.
     - Figure out an easy way to load modules.
 - Add options for different versions of SQL, move install options into PSD1 file.
-- Consider using a customized, location version of Chocolatey for SQL install, or just use the package management resource.
 - Consider adding a shortcut to http://localhost to the vagrant user's desktop.
 - Consider restructuring be compatible with Lability.
 - Switch to using the 'high quality' WebAdministration module.

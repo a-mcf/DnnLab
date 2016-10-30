@@ -1,9 +1,11 @@
 Configuration DNNLabConfig
 {
+    # resources from the gallery
     Import-DscResource -ModuleName 'PSDesiredStateConfiguration'
     Import-DscResource -ModuleName 'cNtfsAccessControl'
     Import-DscResource -ModuleName 'xNetworking'
     Import-DscResource -ModuleName xWebAdministration
+    Import-DscResource -ModuleName xPSDesiredStateConfiguration
 
     # composite resources
     Import-DscResource -ModuleName 'DnnWebserverConfig'
@@ -30,15 +32,20 @@ Configuration DNNLabConfig
         DependsOn = "[xWebsite]DefaultWebsite"
     }
 
-    ChocolateyInstalls SQLServer
+    $sqlInstallFileName = Join-Path $ConfigurationData.DownloadCachePath "SqlExpress.exe"
+    xRemoteFile SqlInstallFile
     {
-        SQLPackage = "sqlserver2008r2express-engine"
-        SQLPackageConfigFile = "c:\vagrant\sqlconfig.ini"
+        Uri = $ConfigurationData.Sql.Engine.DownloadUrl
+        DestinationPath = $sqlInstallFileName 
+        MatchSource = $false
     }
-    
-    ChocolateyInstalls SMS
+
+    SqlInstall SqlExpress
     {
-        SQLPackage = "sqlserver2008r2express-managementstudio"
+        Path = $sqlInstallFileName
+        Arguments = $ConfigurationData.Sql.Engine.Arguments
+        ProductId = $ConfigurationData.Sql.Engine.ProductId
+        DependsOn = "[xRemoteFile]SqlInstallFile"
     }
     
     foreach ($instance in $ConfigurationData.Dnn.Instance)
@@ -50,6 +57,7 @@ Configuration DNNLabConfig
         DnnInstallFiles $dnnInstallFiles
         {
             DnnInstallCachePath = $ConfigurationData.Dnn.Install.CachePath
+            DownloadCachePath = $ConfigurationData.DownloadCachePath
             DownloadUrl = $ConfigurationData.Dnn.Install.DownloadUrl[$instance.InstallVersion]
             DnnVersion = $instance.InstallVersion
             DependsOn = "[DnnWebServerRoles]DnnLabWebRoles"
@@ -107,10 +115,9 @@ Configuration DNNLabConfig
                 WebUser = "IIS APPPOOL\$($instance.Name)"
                 WebUserLoginType = 'WindowsGroup'
                 Ensure = 'Present'
-                DependsOn = "[DnnWebSite]$dnnWebsite"
+                DependsOn = "[DnnWebSite]$dnnWebsite","[SqlInstall]SqlExpress"
         }
 
-        #todo loop through bindings
         $instance.Portal.ForEach({
             $hostsFile = "Hostsfile$($_.HostName -replace '\W','')" 
             xHostsFile $hostsFile

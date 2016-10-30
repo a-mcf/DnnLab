@@ -62,6 +62,7 @@ small while still including SQL Server Management Studio.
 - Start work on automating DNN internals / settings.
     - Add DNN portal support. Currently IIS configuration is supported, but DNN is not modified.
     - Figure out an easy way to load modules.
+- Add hash checking for downloaded files.
 - Add options for different versions of SQL, move install options into PSD1 file.
 - Consider adding a shortcut to http://localhost to the vagrant user's desktop.
 - Consider restructuring be compatible with Lability.

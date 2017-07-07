@@ -1,6 +1,6 @@
 # DNNLab
 A vagrant / DSC configuration to build a local DotNetNuke lab. Multiple versions of multiple instances can be specified 
-by editing the dsc\DNNLabConfiguration.psd1 file. The default configuration deploys a single instance of 7.4.2 and 8.0.4.
+by editing the dsc\DNNLabConfiguration.psd1 file. The default configuration deploys a single instance of 8.0.4 and 9.1.1.
 
 ## Usage:
 Download and install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)

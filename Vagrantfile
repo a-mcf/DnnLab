@@ -5,6 +5,16 @@
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
+
+
+$runDscScript = <<SCRIPT
+  $compositeModules = Get-ChildItem -Path c:\\vagrant\\dsc\\modules
+  $compositeModules | Copy-Item -Destination 'C:\\Program Files\\WindowsPowerShell\\Modules\\' -Recurse -Force
+  . c:\\vagrant\\dsc\\DNNLabConfig.ps1
+  DNNLabConfig -ConfigurationData 'c:\\vagrant\\dsc\\DNNLabConfig.psd1' -OutputPath $env:TEMP
+  Start-DscConfiguration -Force -Wait -Verbose -Path $env:TEMP
+SCRIPT
+
 Vagrant.configure(2) do |config|
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
@@ -22,52 +32,7 @@ Vagrant.configure(2) do |config|
   end
 
   # Run DSC
-  config.vm.provision "dsc", run: "always" do |dsc|
-
-    # Set of module paths relative to the Vagrantfile dir.
-    #
-    # These paths are added to the DSC Configuration running
-    # environment to enable local modules to be addressed.
-    #
-    # @return [Array] Set of relative module paths.
-    dsc.module_path = ["dsc/modules"]
-
-    # The path relative to `dsc.manifests_path` pointing to the Configuration file
-    dsc.configuration_file = "DNNLabConfig.ps1"
-
-    # The path relative to Vagrantfile pointing to the Configuration Data file
-    dsc.configuration_data_file = "dsc/DNNLabConfig.psd1"
-
-    # The Configuration Command to run. Assumed to be the same as the `dsc.configuration_file`
-    # (sans extension) if not provided.
-    # dsc.configuration_name = "MyWebsite"
-
-    # Relative path to a pre-generated MOF file.
-    #
-    # Path is relative to the folder containing the Vagrantfile.
-    # dsc.mof_path = "mof"
-
-    # Relative path to the folder containing the root Configuration manifest file.
-    # Defaults to 'manifests'.
-    #
-    # Path is relative to the folder containing the Vagrantfile.
-    dsc.manifests_path = "dsc"
-
-    # Commandline arguments to the Configuration run
-    #
-    # Set of Parameters to pass to the DSC Configuration.
-    # dsc.configuration_params = {"-MachineName" => "localhost", "-WebAppPath" => "c:\\vagrant\\buildTemp\\_PublishedWebsites\\ShortUrlWebApp", "-HostName" => hostname}
-
-    # The type of synced folders to use when sharing the data
-    # required for the provisioner to work properly.
-    #
-    # By default this will use the default synced folder type.
-    # For example, you can set this to "nfs" to use NFS synced folders.
-    # dsc.synced_folder_type = ""
-
-    # Temporary working directory on the guest machine.
-    # dsc.temp_dir = "c:/tmp/vagrant-dsc"
-  end
+  config.vm.provision "shell", inline: $runDscScript, run: "always"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs

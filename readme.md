@@ -7,11 +7,6 @@ Download and install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 
 Download and install [Vagrant](https://www.vagrantup.com/downloads.html)
 
-Install the Vagrant DSC plugin
-```
-vagrant plugin install vagrant-dsc
-```
-
 Download or clone the repository
 ```
 git clone http://github.com/a-mcf/DNNLab
@@ -25,10 +20,6 @@ vagrant up
 Once provisioned, you can see a list of instances / portals created by visiting ```http://localhost``` 
 from the browser inside of the VM.
 
-If you make DSC changes and want to re-run the DSC provisioner, run:
-```
-vagrant provision --provision-with dsc
-```
 ## Credentials
 As is customary with Vagrant builds, the username and password of the OS are:
 ```

@@ -20,6 +20,12 @@ Configuration InstallDnn
             }
         }
         SetScript = {
+            $allTls = [enum]::GetNames([Net.SecurityProtocolType]) |
+            Where-Object { $_ -notmatch "Ssl3" }
+
+            # enable specified protocols
+            [System.Net.ServicePointManager]::SecurityProtocol = $allTls
+
             Invoke-WebRequest -UseBasicParsing -Uri $using:installUrl -OutFile $using:installHtml
             $installSuccess = Select-String -SimpleMatch "Successfully Installed Site" -Path $using:installHtml -Quiet
     
@@ -38,5 +44,4 @@ Configuration InstallDnn
             Test-Path -Path $using:installHtml
         }
     }
-
 } 

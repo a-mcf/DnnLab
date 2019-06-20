@@ -44,9 +44,9 @@ Configuration DnnWebserverRoles
         Ensure = 'Present'
     }
 
-    WindowsFeature NetFrame35
-    {
-        Name = 'Net-Framework-Core'
-        Ensure = 'Present'
-    }
+    #WindowsFeature NetFrame35
+    #{
+    #    Name = 'Net-Framework-Core'
+    #    Ensure = 'Present'
+    #}
 }

@@ -27,6 +27,12 @@ Configuration DnnInstallFiles
             {
                 mkdir $using:DownloadCachePath
             }
+            $allTls = [enum]::GetNames([Net.SecurityProtocolType]) |
+                Where-Object { $_ -notmatch "Ssl3" }
+
+            # enable specified protocols
+            [System.Net.ServicePointManager]::SecurityProtocol = $allTls
+
             Write-Verbose "Downloading DNN $($using:DnnVersion) to $using:zipPath"
             (New-Object System.Net.WebClient).DownloadFile($using:DownloadUrl,$using:zipPath)
         }

@@ -44,9 +44,10 @@ Configuration DnnWebserverRoles
         Ensure = 'Present'
     }
 
-    WindowsFeature NetFrame35
-    {
-        Name = 'Net-Framework-Core'
-        Ensure = 'Present'
-    }
+    # this was needed for SQL express 2008
+    #WindowsFeature NetFrame35
+    #{
+    #    Name = 'Net-Framework-Core'
+    #    Ensure = 'Present'
+    #}
 }

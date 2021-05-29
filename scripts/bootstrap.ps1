@@ -19,5 +19,3 @@ $dscResources | ForEach-Object {
         Copy-Item -Path $_.FullName -Destination $destinationPath -Recurse
     }
 }
-
-Install-Module cChoco -Force

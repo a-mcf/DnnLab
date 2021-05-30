@@ -139,3 +139,9 @@ Configuration DNNLabConfig
         }
     }
 }
+
+Write-Host "Compiling the MOF"
+DNNLabConfig -ConfigurationData ".\DNNLabConfig.psd1" -OutputPath $env:TEMP
+
+Write-Host "Starting DSC configuration"
+Start-DscConfiguration -Force -Wait -Verbose -Path $env:TEMP

@@ -44,7 +44,8 @@ The build currently uses Microsoft SQL Express 2019.
 - Start work on automating DNN internals / settings.
     - Add DNN portal support. Currently IIS configuration is supported, but DNN is not modified.
     - Figure out an easy way to load modules.
-- Docker Support?
+- Docker Support
+  - The DSC configuration is now somewhat untangled from Vagrant, so it should be possible to use this to build a docker container by running the scripts in the order prescribed by the Vagrantfile.
 - Hyper-V?
   - This could theoretially work, but I had trouble with shared folders and `vagrant powershell`
   - Interesting article here to look into: https://stackoverflow.com/questions/54264439/how-to-get-shared-folders-working-with-vagrant-and-hyper-v

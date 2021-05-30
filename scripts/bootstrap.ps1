@@ -1,21 +1,16 @@
-# copy DSC resources into system module path.
-$destinationPath = Join-Path -Path $env:ProgramFiles -ChildPath "WindowsPowerShell\Modules\"
+Write-Host "Installing NuGet"
+Install-PackageProvider NuGet -Force
+Import-PackageProvider NuGet -Force
 
-if (Test-Path "c:\vagrant\") 
-{
-    $resourcePath = "c:\vagrant\dsc\resources"
-}
-else 
-{
-    $resourcePath = (Get-Location).Path
-}
+Write-Host "Setting PSGallery installation policy to 'Trusted'"
+Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
 
-$dscResources = Get-ChildItem -Directory -Path $resourcePath
+Write-Host "Installing SQL Server Module"
+Install-Module -Name SqlServer -RequiredVersion 21.1.18245 -AllowClobber
 
-$dscResources | ForEach-Object {
-    if (!(Test-Path (Join-Path -Path $destinationPath -ChildPath $_.Name))) 
-    {
-        Write-Host "Copying $($_.FullName)"
-        Copy-Item -Path $_.FullName -Destination $destinationPath -Recurse
-    }
-}
+Write-Host "Installing DSC resources"
+Install-Module -Name cNtfsAccessControl -RequiredVersion 1.3.0 -Force -Confirm:$false
+Install-Module -Name xNetworking -RequiredVersion 2.11.0.0 -Force -Confirm:$false
+Install-Module -Name xPSDesiredStateConfiguration -RequiredVersion 4.0.0.0 -Force -Confirm:$false
+Install-Module -Name xSQLServer -RequiredVersion 9.1.0.0 -Force -Confirm:$false
+Install-Module -Name xWebAdministration -RequiredVersion 1.13.0.0 -Force -Confirm:$false

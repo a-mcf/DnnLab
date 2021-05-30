@@ -4,8 +4,9 @@ Configuration DNNLabConfig
     Import-DscResource -ModuleName 'PSDesiredStateConfiguration'
     Import-DscResource -ModuleName 'cNtfsAccessControl'
     Import-DscResource -ModuleName 'xNetworking'
-    Import-DscResource -ModuleName xWebAdministration
-    Import-DscResource -ModuleName xPSDesiredStateConfiguration
+    Import-DscResource -ModuleName 'xWebAdministration'
+    Import-DscResource -ModuleName 'xPSDesiredStateConfiguration'
+    Import-DscResource -ModuleName 'xSqlServer' #-ModuleVersion 9.1.0.0
 
     # composite resources
     Import-DscResource -ModuleName 'DnnWebserverConfig'

@@ -1,6 +1,6 @@
 # DNNLab
 A vagrant / DSC configuration to build a local DotNetNuke lab. Multiple versions of multiple instances can be specified 
-by editing the dsc\DNNLabConfiguration.psd1 file. The default configuration deploys a single instance of 8.0.4 and 9.1.1.
+by editing the dsc\DNNLabConfiguration.psd1 file. Two instances both running DNN 9.9.1
 
 ## Usage:
 Download and install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
@@ -33,29 +33,19 @@ username: host
 password: dnnhost
 ```
 
-## External Downloads
-
 ### Vagrant Box
-The environment currently uses a minimal Vagrant box. You can find the image 
-[here](https://atlas.hashicorp.com/a-mcf/boxes/Win2012R2-WMF5-min).
-
-### Features on Demand
-The build uses a minimal image, so server roles such as IIS and .Net 3.5 have to be
-downloaded and installed when called by DSC. This burns time when you first ```vagrant up```
-but saves time on the initial download. Replacing the image with a "minimal IIS" build is planned.
+The environment currently uses a server 2019 image. You can find the image 
+[here](https://app.vagrantup.com/StefanScherer/boxes/windows_2019).
 
 ### SQL Express
-The build currently uses Microsoft SQL Express 2008 R2. This version was selected to keep the download
-small while still including SQL Server Management Studio.
+The build currently uses Microsoft SQL Express 2019.
 
 ## Todo / Known Issues:
-- Add Pester tests. For now, integration only. Should run after system provisioning.
 - Start work on automating DNN internals / settings.
     - Add DNN portal support. Currently IIS configuration is supported, but DNN is not modified.
     - Figure out an easy way to load modules.
-- Add hash checking for downloaded files.
-- Add options for different versions of SQL, move install options into PSD1 file.
-- Consider adding a shortcut to http://localhost to the vagrant user's desktop.
-- Consider restructuring be compatible with Lability.
-- Switch to using the 'high quality' WebAdministration module.
-- AppVeyor support?
+- Docker Support?
+- Hyper-V?
+  - This could theoretially work, but I had trouble with shared folders and `vagrant powershell`
+  - Interesting article here to look into: https://stackoverflow.com/questions/54264439/how-to-get-shared-folders-working-with-vagrant-and-hyper-v
+    

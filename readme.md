@@ -2,7 +2,7 @@
 Vagrant/DSC configuration to build a local DotNetNuke lab. Multiple versions of multiple instances can be specified 
 by editing the dsc\DNNLabConfiguration.psd1 file. Two instances both running DNN 9.9.1.
 
-## Usage:
+## Quick Start:
 Download and install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 
 Download and install [Vagrant](https://www.vagrantup.com/downloads.html)
@@ -53,8 +53,8 @@ Normal provisioning scripts don't suffer from this limitation and can be used to
 
 ## Todo / Known Issues:
 - Start work on automating DNN internals / settings.
-    - Add DNN portal support. Currently IIS configuration is supported, but DNN is not modified.
-    - Figure out an easy way to load modules.
+  - Add DNN portal support. Currently IIS configuration is supported, but DNN is not modified.
+  - Figure out an easy way to load modules.
 - Docker Support
   - The DSC configuration is now somewhat untangled from Vagrant, so it should be possible to use this to build a docker container by running the scripts in the order prescribed by the Vagrantfile.
   

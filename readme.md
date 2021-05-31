@@ -1,5 +1,5 @@
 # DNNLab
-Vagrant/DSC configuration to build a local DotNetNuke lab. Multiple versions of multiple instances can be specified 
+Vagrant/DSC configuration to build a local lab for experimenting with [DNN Platform](https://www.dnnsoftware.com/community/download) (formerly DotNetNuke). Multiple versions of multiple instances can be specified 
 by editing the dsc\DNNLabConfiguration.psd1 file. Two instances both running DNN 9.9.1.
 
 ## Quick Start:

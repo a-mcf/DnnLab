@@ -33,14 +33,14 @@ username: host
 password: dnnhost
 ```
 
-### Vagrant Box
+## Vagrant Box
 The environment currently uses a server 2019 image. You can find the image 
 [here](https://app.vagrantup.com/StefanScherer/boxes/windows_2019).
 
-### SQL Express
+## SQL Express
 The build currently uses Microsoft SQL Express 2019.
 
-### Hyper-V and Vagrant
+## Hyper-V and Vagrant
 This configuration should also work with Vagrant and Hyper-V. This image requires the 
 use of the vagrant shared folder. When using Hyper-V, this works by mounting a share
 on the host OS. This comes with a few caveats:

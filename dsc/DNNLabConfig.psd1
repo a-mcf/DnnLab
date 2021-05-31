@@ -8,6 +8,10 @@
             )
         }
     )
+    # if using vagrant with virtualbox, setting the download cache to
+    # the vagrant directory can speed subsequent runs. This does NOT
+    # work with vagrant/hyper-v due to SMB shared folders and DSC running as SYSTEM.
+    # DownloadCachePath = 'c:\vagrant\download_cache'
     DownloadCachePath = 'c:\temp\download_cache'
     Dnn = @{
         Install = @{

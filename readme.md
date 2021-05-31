@@ -9,7 +9,7 @@ Download and install [Vagrant](https://www.vagrantup.com/downloads.html)
 
 Download or clone the repository
 ```
-git clone http://github.com/a-mcf/DNNLab.git
+git clone https://github.com/a-mcf/DNNLab.git
 ```
 
 From the repository folder, run:

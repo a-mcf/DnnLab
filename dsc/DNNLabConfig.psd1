@@ -8,7 +8,7 @@
             )
         }
     )
-    DownloadCachePath = 'c:\vagrant\download_cache'
+    DownloadCachePath = 'c:\temp\download_cache'
     Dnn = @{
         Install = @{
             CachePath = 'c:\installCache'
